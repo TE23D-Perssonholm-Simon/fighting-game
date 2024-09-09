@@ -168,7 +168,7 @@ class Move
             stab = 1;
         }
 
-        damedge= (int)(((42 + crit)*attacker.attack*power/defender.def/50 + 2)*stab*typeadvantage) ;
+        damedge= (int)(((42 + crit)*attacker.attack*power/defender.def/50 + 2)*stab*typeadvantage);
         return(damedge);
 
 
