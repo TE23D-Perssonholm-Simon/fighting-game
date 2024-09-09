@@ -5,13 +5,18 @@ void move(){
 
 class Move
 {
-    string namne;
-    int damedge;
+    string name;
+    int power;
     string type;
 
-    attack() {
+    public Move(string n, int p){
+        name = n;
+        power = p;
+
+    }
+
+    public void Attack(int def, int attack) {
         int crit;
-        opponent.getdef();
         int damedge;
         crit = Random.Shared.Next(15);
         if (crit == 1){
@@ -20,7 +25,8 @@ class Move
         else{
             crit = 1;
         }
-        damedge= (42 + crit)*;
+        damedge= ((42 + crit)*attack*power/def/50 + 2)*3/2;
+
     }
 }
 
@@ -51,6 +57,7 @@ class Pokemon
 
     }
 
+
     public void battle(Pokemon opponent){
 
 
@@ -62,8 +69,5 @@ class Pokemon
         return(def);
     }
 
-    public int getattack(){
-        return(attack);
-    }
     
 }
