@@ -4,7 +4,13 @@ Player one;
 Player two;
 Player first;
 Player second;
+
+string file = "C:\Users\simon.perssonholm\Documents\pokemontypechart.txt";
 int damedge;
+if (File.Exists(file)){
+        Globaldata.typechart = new List<string>(File.ReadAllLines(file));
+}
+
 while(true){
     if(one.team[0].basepokemon.speed > two.team[0].basepokemon.speed){
         first = one;
@@ -24,13 +30,13 @@ while(true){
     }
 
     if(move1.Switchtonr == 0){
-        damedge = move1.themove.Attack(second.team[0].basepokemon.def, first.team[0].basepokemon.def);
+        damedge = move1.themove.Attack(second.team[0].basepokemon, first.team[0].basepokemon);
         second.team[0].hp -= damedge;
         System.Console.WriteLine($"{first.team[0].basepokemon.name} dealt {damedge.ToString()} damedge to {second.team[0].basepokemon.name} remaining hp {second.team[0].hp}");
     }
 
     if(move2.Switchtonr == 0){
-        damedge = move2.themove.Attack(first.team[0].basepokemon.def, second.team[0].basepokemon.def);
+        damedge = move2.themove.Attack(first.team[0].basepokemon, second.team[0].basepokemon);
         first.team[0].hp -= damedge;
         System.Console.WriteLine($"{second.team[0].basepokemon.name} dealt {damedge.ToString()} damedge to {first.team[0].basepokemon.name} remaining hp {first.team[0].hp}");
     }
@@ -41,13 +47,26 @@ while(true){
 
 }
 
+public class Globaldata
+{
+    public static List<string> typechart;
+}
 
-
+class Type{
+    public string name;
+    public int typechartnr;
+    public Type(string n, int t){
+        name = n;
+        typechartnr = t;
+    }
+}
 
 
 class Player{
     public List<Entity> team;
     string name;
+
+    
 
     public Player(string n,List<Entity> t){
         name = n;
@@ -118,17 +137,23 @@ class Move
 {
     public string name;
     public int power;
-    public string type;
+    public Type type;
 
-    public Move(string n, int p){
+    public Move(string n, int p, Type t){
         name = n;
         power = p;
-
+        type = t;
     }
 
-    public int Attack(int def, int attack) {
+    public int Attack(Pokemon attacker, Pokemon defender) {
         int crit;
         int damedge;
+        float stab;
+        List<string> tc = Globaldata.typechart;
+        float typeadvantage = (Globaldata.typechart[type.typechartnr][defender.type.typechartnr] -'0') * (Globaldata.typechart[type.typechartnr][defender.type2.typechartnr] - '0')/4;
+
+        
+        
         crit = Random.Shared.Next(15);
         if (crit == 1){
             crit = 2;
@@ -136,7 +161,14 @@ class Move
         else{
             crit = 1;
         }
-        damedge= ((42 + crit)*attack*power/def/50 + 2)*3/2;
+        if (attacker.type == type){
+            stab = 1.5f; 
+        }
+        else {
+            stab = 1;
+        }
+
+        damedge= (int)(((42 + crit)*attacker.attack*power/defender.def/50 + 2)*stab*typeadvantage) ;
         return(damedge);
 
 
@@ -202,15 +234,21 @@ class Pokemon
 
     public List<Move> moves;
 
+    public Type type;
+
+    public Type type2;
 
 
-    public Pokemon(string n, int hp, int def, int attack, int speed, List<Move> m){
+
+    public Pokemon(string n, int hp, int def, int attack, int speed, List<Move> m,Type t1, Type t2){
         name = n;
         this.hp = hp;
         this.def = def;
         this.attack = attack;
         this.speed = speed;
-        Movess = m;
+        moves = m;
+        type = t1;
+        type2 = t2;
 
     }
 
