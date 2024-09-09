@@ -7,7 +7,21 @@ void move(){
 
 class Player{
     List<Entity> team;
-    
+    string name;
+
+    public Player(string n,List<Entity> t){
+        name = n;
+        team = t;
+        
+    }
+
+    public void Move(){
+        System.Console.WriteLine($"{team[0].basepokemon.name}");
+        System.Console.WriteLine();
+    }
+
+
+
 }
 
 class Move
@@ -42,12 +56,12 @@ class Move
 
 class Entity
 {
-    int hp;
+    public int hp;
     int maxhp;
 
     Move attackchosen;
     
-    Pokemon basepokemon;
+    public Pokemon basepokemon;
 
     Move a,b,c,d;
     Entity(int hp, Pokemon poke, Move one, Move two, Move three, Move four){
