@@ -1,6 +1,13 @@
 ﻿
+using Microsoft.Win32.SafeHandles;
+
 void move(){
 
+}
+
+class Player{
+    List<Entity> team;
+    
 }
 
 class Move
@@ -15,7 +22,7 @@ class Move
 
     }
 
-    public void Attack(int def, int attack) {
+    public int Attack(int def, int attack) {
         int crit;
         int damedge;
         crit = Random.Shared.Next(15);
@@ -26,47 +33,61 @@ class Move
             crit = 1;
         }
         damedge= ((42 + crit)*attack*power/def/50 + 2)*3/2;
+        return(damedge);
+
+
 
     }
+}
+
+class Entity
+{
+    int hp;
+    int maxhp;
+
+    Move attackchosen;
+    
+    Pokemon basepokemon;
+
+    Move a,b,c,d;
+    Entity(int hp, Pokemon poke, Move one, Move two, Move three, Move four){
+        this.hp = hp;
+        basepokemon = poke;
+        a = one;
+        b = two;
+        c = three;
+        d = four;
+        maxhp = basepokemon.hp;
+        hp = basepokemon.hp;
+    }
+
+    public void Battle(Entity opponent){
+        opponent.hp -= a.Attack(opponent.basepokemon.def,basepokemon.attack);
+
+    }
+
+
 }
 
 
 class Pokemon
 {
-    Move move1,move2,move3,move4;
-    string name;
-    int hp;
+    
+    public string name;
+    public int hp,def,attack,speed;
 
-    int def;
-
-    int attack;
-    int speed;
+    public List<Move> moves;
 
 
 
-    public Pokemon(Move a,Move b, Move c, Move d, string n, int hp, int def, int attack, int speed){
-        move1 = a;
-        move2 = b;
-        move3 = c;
-        move4 = d;
+    public Pokemon(string n, int hp, int def, int attack, int speed, List<Move> m){
         name = n;
         this.hp = hp;
         this.def = def;
         this.attack = attack;
         this.speed = speed;
+        moves = m;
 
-    }
-
-
-    public void battle(Pokemon opponent){
-
-
-        
-
-    }
-
-    public int getdef(){
-        return(def);
     }
 
     
