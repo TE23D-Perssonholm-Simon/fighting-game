@@ -46,6 +46,13 @@ public class Pokemonentity{
     }
 }
 
+public abstract class Statusefffect{
+
+}
+public abstract class Temporaryeffect{
+
+}
+
 public abstract class Action{
     public abstract void execute(Pokemonentity attacker, Pokemonentity defender);
 }
