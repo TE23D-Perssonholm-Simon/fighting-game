@@ -1,4 +1,6 @@
-﻿Dictionary<string,Pokemon> Pokedex = new Dictionary<string, Pokemon>();
+﻿using System.Security.Cryptography.X509Certificates;
+
+Dictionary<string,Pokemon> Pokedex = new Dictionary<string, Pokemon>();
 Dictionary<string,Type> types = new Dictionary<string, Type>();
 
 public class Pokemonentity{
@@ -17,14 +19,49 @@ public class Pokemonentity{
     }
 }
 
-public class Move{
+public abstract class Action{
+    public abstract void Play(Pokemonentity a, Pokemonentity d);
+}
+
+public class Switcheroo:Action{
+    int switchto;
+    Switcheroo(int s){
+        switchto = s;
+    }
+
+    public override void Play(Pokemonentity a, Pokemonentity d){
+        
+    }
+    
+}
+public class Move:Action{
+    int accuracy;
     int power;
+    Type type;
+    List<Effect> effects = new List<Effect>();
+
+    public Move(Type t,int a, int p, List<Effect> e){
+        effects = e;
+        type = t;
+        accuracy = a;
+        power = p;
+    }
+
+    public override void Play(Pokemonentity attacker, Pokemonentity defender){
+        int random = Random.Shared.Next(100);
+        if (random <= accuracy){
+            foreach (Effect x in effects){
+                x.play(attacker,defender);
+            }
+        }
+    }
+    
 
 
     
 }
 public abstract class Effect{
-    public abstract void play();
+    public abstract void play(Pokemonentity a, Pokemonentity d);
 }
 public class Type{
     string name;
