@@ -1,12 +1,5 @@
-﻿using System.Reflection.Metadata;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Channels;
-
-
-string typechart = "C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemontypechart.txt";
-
+﻿string typechart = "C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemontypechart.txt";
 Globaldata.Loaddata("hi",typechart);
-
 
 public static class Globaldata{
     public static Dictionary<string,Pokemon> Pokedex = new Dictionary<string, Pokemon>();
@@ -23,8 +16,8 @@ public static class Globaldata{
 }
 
 public class Team{
-    int player = 0;
-    List<Pokemonentity> pokemons = new List<Pokemonentity>();
+    public int player = 0;
+    public List<Pokemonentity> pokemons = new List<Pokemonentity>();
     
     public Team(List<Pokemonentity> team){
         pokemons = team;
@@ -46,15 +39,8 @@ public class Pokemonentity{
     }
 }
 
-public abstract class Statusefffect{
-
-}
-public abstract class Temporaryeffect{
-
-}
-
 public abstract class Action{
-    public abstract void execute(Pokemonentity attacker, Pokemonentity defender);
+    public abstract void execute(Team attack, Team defend);
 }
 
 public class Switcheroo:Action{
@@ -62,8 +48,11 @@ public class Switcheroo:Action{
     public Switcheroo(int s){
         switchto = s;
     }
-    public override void execute(Pokemonentity attacker, Pokemonentity defender)
+    public override void execute(Team attack, Team defend)
     {
+        Pokemonentity leadpokemon = attack.pokemons[0];
+        attack.pokemons[0] = attack.pokemons[switchto];
+        attack.pokemons[switchto] = leadpokemon;
         
     }
 }
@@ -77,11 +66,14 @@ public class Move:Action{
         this.damadgeeffect = damadgeeffect;
         effects = e;
     }
-    public override void execute(Pokemonentity attacker, Pokemonentity defender)
+    public override void execute(Team one, Team two)
     {
+        Pokemonentity attacker = one.pokemons[0];
+        Pokemonentity defender = two.pokemons[0];
         System.Console.WriteLine(name);
         if (damadgeeffect.Play(attacker,defender)){
             foreach(Effect x in effects){
+
                 x.Play(attacker,defender);
             }
         }
