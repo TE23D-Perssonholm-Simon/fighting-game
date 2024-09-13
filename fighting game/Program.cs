@@ -23,20 +23,36 @@ public static class Globaldata{
         }
 
     }
-    public static int Ask(int nrofoptions){
-    while (true){
-        string svar = Console.ReadLine();
-        try{
-            if (int.Parse(svar) <= nrofoptions && int.Parse(svar) > 0){
-                return(int.Parse(svar));
+    public static object Ask(string starttext, Dictionary<string,object> dict){
+        System.Console.WriteLine(starttext);
+        int cursor = 0;
+        List<string> keys = new List<string>(dict.Keys);
+        while (true){
+            for (int i = 0; i < keys.Count(); i++){
+                if (i == cursor){
+                    Console.Write("\x1b[47m\x1b[30m");
+                    Console.Write(keys[i]);
+                    Console.Write("\x1b[0m");
+                }
+                else {
+                    Console.WriteLine(keys[i]);
+                }
+            }
+            string input = Console.ReadKey().KeyChar.ToString();
+            if (input == "w"){
+                if (cursor != 0){
+                    cursor--;
+                }
+            }
+            if (input == "s"){
+                if (cursor != keys.Count()){
+                    cursor++;
+                }
             }
         }
-        catch{
-            
-        }
-        System.Console.WriteLine("Write the number corresponding to the option ex 1,2,3");
+
+
     }
-}
 }
 
 
