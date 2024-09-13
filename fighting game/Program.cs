@@ -1,20 +1,16 @@
 ﻿using System.Reflection;
+using System.Security.Cryptography;
+
 
 string typechart = """C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemontypechart.txt""";
 Globaldata.Loaddata("hi",typechart);
 
-
-while (true){
-    
-}
-
-
-
 public static class Globaldata{
     public static Dictionary<string,Pokemon> Pokedex = new Dictionary<string, Pokemon>();
     public static Dictionary<string,Type> types = new Dictionary<string, Type>();
+
+    public static Dictionary<string,Team> teamcollection = new Dictionary<string, Team>();
     public static List<string> typechartlines;
-    public static Dictionary<int,int> teamsorter;
     public static void Loaddata(string pokemons, string typechart){
         List<string> typechartlines = new List<string>(File.ReadAllLines(typechart));
         for (int i = 0; i<16; i++){
@@ -23,36 +19,36 @@ public static class Globaldata{
         }
 
     }
-    public static object Ask(string starttext, Dictionary<string,object> dict){
-        System.Console.WriteLine(starttext);
+    public static string Ask(string title, List<string> keys){
         int cursor = 0;
-        List<string> keys = new List<string>(dict.Keys);
         while (true){
-            for (int i = 0; i < keys.Count(); i++){
+            Console.Clear();
+            System.Console.WriteLine(title);
+            for (int i = 0; i < keys.Count; i++){
                 if (i == cursor){
                     Console.Write("\x1b[47m\x1b[30m");
                     Console.Write(keys[i]);
-                    Console.Write("\x1b[0m");
+                    Console.WriteLine("\x1b[0m");
+                
                 }
                 else {
                     Console.WriteLine(keys[i]);
-                }
+                    }
             }
-            string input = Console.ReadKey().KeyChar.ToString();
+            string input = Console.ReadKey().Key.ToString().ToLower();
             if (input == "w"){
                 if (cursor != 0){
                     cursor--;
                 }
             }
-            if (input == "s"){
-                if (cursor != keys.Count()){
-                    cursor++;
-                }
+            if (input == "s" && cursor + 1 < keys.Count){
+                cursor++;              
             }
-        }
-
-
+            if (input == "enter"){
+                return(keys[cursor]);        
+            }
     }
+}
 }
 
 
@@ -62,23 +58,49 @@ public class Player{
         team1 = t;
     }
 
-    public Move Makemove(Player opponent){
+    public Action Makemove(Player opponent){
         Pokemonentity Leadpokemon = team1.pokemons[0];
+        while (true){
         System.Console.WriteLine("choose action");
-        System.Console.WriteLine("1: Battle");
-        System.Console.WriteLine("2: Switch");
-        int svar = Globaldata.Ask(2);
-        if (svar == 1){
-            Console.Clear();
-            System.Console.WriteLine("choose move");
-            System.Console.WriteLine();
+        List<string> options = new List<string>();
+        options.Add("battle");
+        options.Add("switch");
+        string svar = Globaldata.Ask("choose action",options);
+        if (svar == "battle"){
+            options.Clear();
+            foreach (Move x in team1.pokemons[0].moves){
+                options.Add(x.name);
+            }
+            options.Add("Go back");
+            svar = Globaldata.Ask("Choose a move",options);
+            foreach (Move x in team1.pokemons[0].moves){
+                if (x.name == svar){
+                    return x;
+                }
+
+            }
+            
+        }
+        else if (svar == "switch"){
+            options.Clear();
+            foreach(Pokemonentity x in team1.pokemons){
+                options.Add(x.basepokemon.name);
+                
+            }
+            options.Add("Go back");
+            svar = Globaldata.Ask("Switch to what pokemon?", options);
+            for (int i = 0; i<team1.pokemons.Count; i++){
+                if (team1.pokemons[i].basepokemon.name == svar){
+                    return new Switcheroo(i);
+                }
+            }
+        }
         }
         
     }
 }
 
 public class Team{
-    int id;
     public List<Pokemonentity> pokemons = new List<Pokemonentity>();
     
     public Team(List<Pokemonentity> team){
@@ -128,7 +150,7 @@ public class Switcheroo:Action{
 }
 
 public class Move:Action{
-    string name;
+    public string name;
     new public int priority;
     List<Effect> effects = new List<Effect>();
     Effect damadgeeffect;
