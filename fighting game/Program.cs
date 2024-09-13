@@ -5,6 +5,21 @@ using System.Security.Cryptography;
 string typechart = """C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemontypechart.txt""";
 Globaldata.Loaddata("hi",typechart);
 
+void match(Player player1, Player player2){
+    List<Action> actions = new List<Action>();
+    Action move1;
+    Action move2;
+    while (true){
+        actions.Clear();
+        move1 = player1.Makemove(player2);
+        move2 = player2.Makemove(player1);
+        if (move1.priority == move2.priority){
+            
+        }
+
+    }
+}
+
 public static class Globaldata{
     public static Dictionary<string,Pokemon> Pokedex = new Dictionary<string, Pokemon>();
     public static Dictionary<string,Type> types = new Dictionary<string, Type>();
@@ -145,6 +160,8 @@ public class Switcheroo:Action{
         Pokemonentity leadpokemon = attack.pokemons[0];
         attack.pokemons[0] = attack.pokemons[switchto];
         attack.pokemons[switchto] = leadpokemon;
+        System.Console.WriteLine($"{leadpokemon} switched out");
+        System.Console.WriteLine($"{attack.pokemons[0]} switched in");
         
     }
 }
@@ -210,10 +227,7 @@ public class Damadge:Effect{
         }
         int damadge = (int)(((40*crit + 2)*power*attacker.attack/defender.def/50 + 2)*stab*typeadvantage);
         defender.hp =- damadge;
-        if (defender.hp <= 0){
-            //make a faint function
-        }
-        else{
+        if (defender.hp > 0){
             System.Console.WriteLine($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
         }
 
