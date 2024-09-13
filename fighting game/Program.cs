@@ -5,17 +5,59 @@ using System.Security.Cryptography;
 string typechart = """C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemontypechart.txt""";
 Globaldata.Loaddata("hi",typechart);
 
+
+
 void match(Player player1, Player player2){
     List<Action> actions = new List<Action>();
     Action move1;
+    Console.Clear();
+    System.Console.WriteLine("secondplayer to move (press enter to progress)");
+    Console.ReadLine();
     Action move2;
+    bool fainted1 = false;
+    bool fainted2 = false;
     while (true){
         actions.Clear();
         move1 = player1.Makemove(player2);
         move2 = player2.Makemove(player1);
         if (move1.priority == move2.priority){
+            if (player1.team1.pokemons[0].speed >= player2.team1.pokemons[0].speed){
+                player1.Play(move1,player2);
+                if (player2.team1.pokemons[0].hp > 0){
+                    player2.Play(move2,player1);
+                }
+            }
+            else{
+                player2.Play(move2,player1);
+            }
             
         }
+        else if(move1.priority > move2.priority){
+            player1.Play(move1,player2);
+            if (player2.team1.pokemons[0].hp > 0){
+                player2.Play(move2,player1);
+            }
+        }
+        else{
+            player2.Play(move2,player1);
+            if (player1.team1.pokemons[0].hp > 0){
+                player1.Play(move1,player2);
+            }
+            
+        }
+
+        if (player1.team1.pokemons[0].hp <= 0){
+            player1.faint();
+            fainted1 = true;
+        }
+        if (player2.team1.pokemons[0].hp <= 0){
+            player2.faint();
+            fainted2 = true;
+        }
+        if (fainted1){
+            System.Console.WriteLine("");
+        }
+
 
     }
 }
@@ -68,9 +110,22 @@ public static class Globaldata{
 
 
 public class Player{
-    Team team1;
+    public Team team1;
     public Player(Team t){
         team1 = t;
+    }
+
+    public bool Play(Action damove,Player defender){
+        Team def = defender.team1;
+        damove.execute(team1,def);
+        if (defender.team1.pokemons[0].hp == 0){
+            return false;
+        }
+        return true;
+    }
+
+    public void faint(){
+
     }
 
     public Action Makemove(Player opponent){
@@ -117,9 +172,29 @@ public class Player{
 
 public class Team{
     public List<Pokemonentity> pokemons = new List<Pokemonentity>();
+    public bool faintedthisturn;
     
     public Team(List<Pokemonentity> team){
         pokemons = team;
+    }
+
+    public void faint(){
+        List<string> options = new List<string>();
+        faintedthisturn = true;
+        string svar;
+            foreach(Pokemonentity x in pokemons){
+                options.Add(x.basepokemon.name);
+                
+            }
+            options.Add("Go back");
+            svar = Globaldata.Ask("Switch to what pokemon?", options);
+            for (int i = 0; i<pokemons.Count; i++){
+                if (pokemons[i].basepokemon.name == svar){
+                    Action switchto = new Switcheroo(i);
+                    switchto.execute(this,this);
+                }
+            }
+
     }
 }
 public class Pokemonentity{
@@ -229,6 +304,9 @@ public class Damadge:Effect{
         defender.hp =- damadge;
         if (defender.hp > 0){
             System.Console.WriteLine($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
+        }
+        else {
+            System.Console.WriteLine($"{defender.basepokemon.name} fainted");
         }
 
         return true;
