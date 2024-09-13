@@ -1,10 +1,20 @@
-﻿string typechart = "C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemontypechart.txt";
+﻿using System.Reflection;
+
+string typechart = """C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemontypechart.txt""";
 Globaldata.Loaddata("hi",typechart);
+
+
+while (true){
+    
+}
+
+
 
 public static class Globaldata{
     public static Dictionary<string,Pokemon> Pokedex = new Dictionary<string, Pokemon>();
     public static Dictionary<string,Type> types = new Dictionary<string, Type>();
     public static List<string> typechartlines;
+    public static Dictionary<int,int> teamsorter;
     public static void Loaddata(string pokemons, string typechart){
         List<string> typechartlines = new List<string>(File.ReadAllLines(typechart));
         for (int i = 0; i<16; i++){
@@ -13,10 +23,46 @@ public static class Globaldata{
         }
 
     }
+    public static int Ask(int nrofoptions){
+    while (true){
+        string svar = Console.ReadLine();
+        try{
+            if (int.Parse(svar) <= nrofoptions && int.Parse(svar) > 0){
+                return(int.Parse(svar));
+            }
+        }
+        catch{
+            
+        }
+        System.Console.WriteLine("Write the number corresponding to the option ex 1,2,3");
+    }
+}
+}
+
+
+public class Player{
+    Team team1;
+    public Player(Team t){
+        team1 = t;
+    }
+
+    public Move Makemove(Player opponent){
+        Pokemonentity Leadpokemon = team1.pokemons[0];
+        System.Console.WriteLine("choose action");
+        System.Console.WriteLine("1: Battle");
+        System.Console.WriteLine("2: Switch");
+        int svar = Globaldata.Ask(2);
+        if (svar == 1){
+            Console.Clear();
+            System.Console.WriteLine("choose move");
+            System.Console.WriteLine();
+        }
+        
+    }
 }
 
 public class Team{
-    public int player = 0;
+    int id;
     public List<Pokemonentity> pokemons = new List<Pokemonentity>();
     
     public Team(List<Pokemonentity> team){
@@ -27,7 +73,9 @@ public class Pokemonentity{
     public Pokemon basepokemon;
     public int hp,maxhp,def,attack,speed;
     public Type type1, type2;
-    public Pokemonentity(Pokemon e){
+
+    public List<Move> moves = new List<Move>();
+    public Pokemonentity(Pokemon e, Move a, Move b,Move c, Move d){
         basepokemon = e;
         hp = basepokemon.hp;
         def = basepokemon.def;
@@ -36,15 +84,21 @@ public class Pokemonentity{
         type1 = basepokemon.type1;
         type2 = basepokemon.type2;
         hp = maxhp;
+        moves.Add(a);
+        moves.Add(b);
+        moves.Add(c);
+        moves.Add(d);
     }
 }
 
 public abstract class Action{
+    public int priority;
     public abstract void execute(Team attack, Team defend);
 }
 
 public class Switcheroo:Action{
     int switchto;
+    new public int priority = 10;
     public Switcheroo(int s){
         switchto = s;
     }
@@ -59,29 +113,31 @@ public class Switcheroo:Action{
 
 public class Move:Action{
     string name;
+    new public int priority;
     List<Effect> effects = new List<Effect>();
     Effect damadgeeffect;
-    public Move(string n,Effect damadgeeffect, List<Effect> e){
+    public Move(string n,Effect damadgeeffect, List<Effect> e, int p){
         name = n;
         this.damadgeeffect = damadgeeffect;
         effects = e;
+        priority = p;
     }
     public override void execute(Team one, Team two)
     {
         Pokemonentity attacker = one.pokemons[0];
         Pokemonentity defender = two.pokemons[0];
         System.Console.WriteLine(name);
-        if (damadgeeffect.Play(attacker,defender)){
+        if (damadgeeffect.Play(one,two)){
             foreach(Effect x in effects){
 
-                x.Play(attacker,defender);
+                x.Play(one,two);
             }
         }
     }
 
 }
 public abstract class Effect{
-    public abstract bool Play(Pokemonentity attacker, Pokemonentity defender);
+    public abstract bool Play(Team a, Team d);
 }
 
 public class Damadge:Effect{
@@ -94,8 +150,11 @@ public class Damadge:Effect{
         this.type = type;
     }
 
-    public override bool Play(Pokemonentity attacker, Pokemonentity defender){
+    public override bool Play(Team a, Team d){
         int randomnr = Random.Shared.Next(100);
+        Pokemonentity attacker;
+        attacker = a.pokemons[0];
+        Pokemonentity defender = d.pokemons[0];
         if (randomnr > accuracy){
             return false;
         }
@@ -117,7 +176,7 @@ public class Damadge:Effect{
             //make a faint function
         }
         else{
-            System.Console.WriteLine($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp}");
+            System.Console.WriteLine($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
         }
 
         return true;
