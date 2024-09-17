@@ -1,14 +1,16 @@
-﻿using System.Reflection;
+﻿using System.Net;
+using System.Reflection;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 
 
-string typechart = """C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemontypechart.txt""";
-Globaldata.Loaddata("hi",typechart);
+string Pokemontypechart = """C:\Users\simon.perssonholm\Documents\prog1\fighting game.pokemonPokemontypechart.txt""";
+Globaldata.Loaddata("hi",Pokemontypechart);
 
 
 
 void match(Player player1, Player player2){
-    List<Action> actions = new List<Action>();
     Action move1;
     Console.Clear();
     System.Console.WriteLine("secondplayer to move (press enter to progress)");
@@ -17,7 +19,6 @@ void match(Player player1, Player player2){
     bool fainted1 = false;
     bool fainted2 = false;
     while (true){
-        actions.Clear();
         move1 = player1.Makemove(player2);
         move2 = player2.Makemove(player1);
         if (move1.priority == move2.priority){
@@ -26,9 +27,18 @@ void match(Player player1, Player player2){
                 if (player2.team1.pokemons[0].hp > 0){
                     player2.Play(move2,player1);
                 }
+                else{
+                    fainted2 = true;
+                }
             }
             else{
                 player2.Play(move2,player1);
+                if (player1.team1.pokemons[0].hp > 0){
+                    player1.Play(move1,player2);
+                }
+                else{
+                    fainted1 = true;
+                }
             }
             
         }
@@ -37,25 +47,41 @@ void match(Player player1, Player player2){
             if (player2.team1.pokemons[0].hp > 0){
                 player2.Play(move2,player1);
             }
+            else{
+                fainted2 = true;
+            }
         }
         else{
             player2.Play(move2,player1);
             if (player1.team1.pokemons[0].hp > 0){
                 player1.Play(move1,player2);
             }
+            else{
+                fainted1 = true;
+            }
             
         }
 
-        if (player1.team1.pokemons[0].hp <= 0){
-            player1.faint();
-            fainted1 = true;
+        if (fainted1){
+            if (player1.Faint(player2.team1)){
+                System.Console.WriteLine($"{player1.name} won!!!");
+                Console.ReadLine();
+                break;
+            }
+            
         }
-        if (player2.team1.pokemons[0].hp <= 0){
-            player2.faint();
-            fainted2 = true;
+        if (fainted2){
+            if (player2.Faint(player1.team1)){
+                System.Console.WriteLine($"{player2.name} won!!!");
+                Console.ReadLine();
+                break;
+            }
         }
         if (fainted1){
-            System.Console.WriteLine("");
+            System.Console.WriteLine($"{player1.team1.pokemons[0]} switched in");
+        }
+        if (fainted2){
+            System.Console.WriteLine($"{player2.team1.pokemons[0]} switched in");
         }
 
 
@@ -64,16 +90,30 @@ void match(Player player1, Player player2){
 
 public static class Globaldata{
     public static Dictionary<string,Pokemon> Pokedex = new Dictionary<string, Pokemon>();
-    public static Dictionary<string,Type> types = new Dictionary<string, Type>();
+    public static Dictionary<string,Pokemontype> Pokemontypes = new Dictionary<string, Pokemontype>();
 
     public static Dictionary<string,Team> teamcollection = new Dictionary<string, Team>();
-    public static List<string> typechartlines;
-    public static void Loaddata(string pokemons, string typechart){
-        List<string> typechartlines = new List<string>(File.ReadAllLines(typechart));
+    
+   
+    public static List<string> Pokemontypechartlines;
+    public static void Loaddata(string pokemons, string Pokemontypechart){
+        List<string> Pokemontypechartlines = new List<string>(File.ReadAllLines(Pokemontypechart));
         for (int i = 0; i<16; i++){
-            string name = typechartlines[16 + i];
-            types.Add(name, new Type(name,i));
+            string name = Pokemontypechartlines[16 + i];
+            Pokemontypes.Add(name, new Pokemontype(name,i));
         }
+        int g = 32;
+        while (g < Pokemontypechartlines.Count){
+            //load effects
+            while (Pokemontypechartlines[g] != "£"){
+                Type effecttype = Type.GetType(Pokemontypechartlines[g]);
+                if (effecttype != null){
+                    Effect effect = (Effect)Activator.CreateInstance(effecttype);
+                }
+
+            }
+        }
+
 
     }
     public static string Ask(string title, List<string> keys){
@@ -111,6 +151,7 @@ public static class Globaldata{
 
 public class Player{
     public Team team1;
+    public string name;
     public Player(Team t){
         team1 = t;
     }
@@ -124,8 +165,26 @@ public class Player{
         return true;
     }
 
-    public void faint(){
-
+    public bool Faint(Team opponent){
+        List<string> options = new List<string>();
+        string svar;
+        if (team1.pokemons.Count > 1){
+            for(int i = 1; i < options.Count; i++){
+                options.Add(team1.pokemons[i].basepokemon.name);
+                
+            }
+            svar = Globaldata.Ask("Switch to what pokemon?", options);
+            for (int i = 0; i<team1.pokemons.Count; i++){
+                if (team1.pokemons[i].basepokemon.name == svar){
+                    new Switcheroo(i).execute(team1,opponent);
+                    return true;
+                }
+            }
+        }
+        else{
+            return true;
+        }
+        return true;
     }
 
     public Action Makemove(Player opponent){
@@ -200,8 +259,9 @@ public class Team{
 public class Pokemonentity{
     public Pokemon basepokemon;
     public int hp,maxhp,def,attack,speed;
-    public Type type1, type2;
-
+    public Pokemontype Pokemontype1, Pokemontype2;
+    public Statuseffekt staticeffekt = null;
+    public List<Statuseffekt> statuseffekts = new List<Statuseffekt>();
     public List<Move> moves = new List<Move>();
     public Pokemonentity(Pokemon e, Move a, Move b,Move c, Move d){
         basepokemon = e;
@@ -209,8 +269,8 @@ public class Pokemonentity{
         def = basepokemon.def;
         attack = basepokemon.attack;
         speed = basepokemon.speed;
-        type1 = basepokemon.type1;
-        type2 = basepokemon.type2;
+        Pokemontype1 = basepokemon.Pokemontype1;
+        Pokemontype2 = basepokemon.Pokemontype2;
         hp = maxhp;
         moves.Add(a);
         moves.Add(b);
@@ -219,10 +279,23 @@ public class Pokemonentity{
     }
 }
 
+public class Statuseffekt{
+    public List<Statuscomponent> components = new List<Statuscomponent>();
+    public Statuseffekt(List<Statuscomponent> comp){
+        components = comp;
+    }
+}
+public abstract class Statuscomponent{
+
+}
+public abstract class Movecomponent:Statuscomponent{
+    public abstract Effect run(Effect themove);
+}
 public abstract class Action{
     public int priority;
     public abstract void execute(Team attack, Team defend);
 }
+
 
 public class Switcheroo:Action{
     int switchto;
@@ -254,30 +327,50 @@ public class Move:Action{
     }
     public override void execute(Team one, Team two)
     {
+        Effect localdamadgeeffect = damadgeeffect;
+        
         Pokemonentity attacker = one.pokemons[0];
         Pokemonentity defender = two.pokemons[0];
+        foreach (Statuseffekt x in attacker.statuseffekts){
+            foreach(Statuscomponent e in x.components){
+                if (e is Movecomponent movecomponent){
+                    localdamadgeeffect = movecomponent.run(localdamadgeeffect);
+                }
+                
+            }
+        }
+        if (attacker.staticeffekt != null){
+            foreach(Statuscomponent e in attacker.staticeffekt.components){
+                if (e is Movecomponent movecomponent){
+                    localdamadgeeffect = movecomponent.run(localdamadgeeffect);
+                }
+                
+        }
+        }
         System.Console.WriteLine(name);
         if (damadgeeffect.Play(one,two)){
             foreach(Effect x in effects){
-
                 x.Play(one,two);
             }
         }
+
     }
 
 }
 public abstract class Effect{
     public abstract bool Play(Team a, Team d);
+    public string failmessage;
 }
 
 public class Damadge:Effect{
     int power;
     int accuracy;
-    Type type;
-    public Damadge(int p, int accuracy, Type type){
+    Pokemontype Pokemontype;
+    
+    public Damadge(int p, int accuracy, Pokemontype Pokemontype){
         power = p;
         this.accuracy = accuracy;
-        this.type = type;
+        this.Pokemontype = Pokemontype;
     }
 
     public override bool Play(Team a, Team d){
@@ -290,17 +383,17 @@ public class Damadge:Effect{
         }
         float crit = 1;
         float stab;
-        if (type == attacker.type1 || type == attacker.type2){
+        if (Pokemontype == attacker.Pokemontype1 || Pokemontype == attacker.Pokemontype2){
             stab = 1.5f;
         }
         else{
             stab = 1.0f;
         }
-        float typeadvantage = (Globaldata.typechartlines[type.chartnr][defender.type1.chartnr] - '0') * (Globaldata.typechartlines[type.chartnr][defender.type2.chartnr] - '0');
-        if (typeadvantage == 0){
+        float Pokemontypeadvantage = (Globaldata.Pokemontypechartlines[Pokemontype.chartnr][defender.Pokemontype1.chartnr] - '0') * (Globaldata.Pokemontypechartlines[Pokemontype.chartnr][defender.Pokemontype2.chartnr] - '0')/4;
+        if (Pokemontypeadvantage == 0){
             return false;
         }
-        int damadge = (int)(((40*crit + 2)*power*attacker.attack/defender.def/50 + 2)*stab*typeadvantage);
+        int damadge = (int)(((40*crit + 2)*power*attacker.attack/defender.def/50 + 2)*stab*Pokemontypeadvantage);
         defender.hp =- damadge;
         if (defender.hp > 0){
             System.Console.WriteLine($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
@@ -319,11 +412,11 @@ public class Damadge:Effect{
 
 
 
-public class Type{
+public class Pokemontype{
     public string name;
     public int chartnr;
 
-    public Type(string name, int chartnr){
+    public Pokemontype(string name, int chartnr){
         this.name = name;
         this.chartnr = chartnr;
     }
@@ -334,16 +427,16 @@ public class Pokemon{
     public int hp,attack,def,speed;
     public string name;
 
-    public Type type1;
-    public Type type2;
+    public Pokemontype Pokemontype1;
+    public Pokemontype Pokemontype2;
 
-    public Pokemon(int hp, int attack, int def, int speed, Type type1, Type type2){
+    public Pokemon(int hp, int attack, int def, int speed, Pokemontype Pokemontype1, Pokemontype Pokemontype2){
         this.hp = hp;
         this.attack = attack;
         this.def = def;
         this.speed = speed;
-        this.type1 = type1;
-        this.type2 = type2;
+        this.Pokemontype1 = Pokemontype1;
+        this.Pokemontype2 = Pokemontype2;
     }
 
 }
