@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices.Marshalling;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
@@ -64,29 +65,40 @@ void match(Team player1, Team player2){
 }
 
 public static class Globaldata{
+    public static int g;
     public static Dictionary<string,Pokemon> Pokedex = new Dictionary<string, Pokemon>();
     public static Dictionary<string,Pokemontype> Pokemontypes = new Dictionary<string, Pokemontype>();
+    public static Dictionary<string,Pokemonentity> pokeid = new Dictionary<string, Pokemonentity>();
 
     public static Dictionary<string,Team> teamcollection = new Dictionary<string, Team>();
     public static List<Team> faintorder = new List<Team>();
    
     public static List<string> Pokemontypechartlines;
+    public static Dictionary<string,Type> classdict = new Dictionary<string, Type>();
+    public static Effect loadeffect(int g){
+
+        Type effecttype = classdict[Pokemontypechartlines[g]];
+        List<string> strings = new List<string>();
+        while(Pokemontypechartlines[g] != "end"){
+            strings.Add(Pokemontypechartlines[g]);
+        }
+        Effect theeffect = (Effect)Activator.CreateInstance(effecttype,strings);
+        return theeffect;
+    }
     public static void Loaddata(string pokemons, string Pokemontypechart){
         List<string> Pokemontypechartlines = new List<string>(File.ReadAllLines(Pokemontypechart));
         for (int i = 0; i<16; i++){
             string name = Pokemontypechartlines[16 + i];
             Pokemontypes.Add(name, new Pokemontype(name,i));
         }
-        int g = 32;
+        Globaldata.g = 32;
         while (g < Pokemontypechartlines.Count){
-            //load effects
+            //load moves
+            List<Effect> effects = new List<Effect>();
             while (Pokemontypechartlines[g] != "£"){
-                Type effecttype = Type.GetType(Pokemontypechartlines[g]);
-                if (effecttype != null){
-                    Effect effect = (Effect)Activator.CreateInstance(effecttype);
-                    
+                while (Pokemontypechartlines[g] != "e"){
+                    effects.Add(loadeffect(g));
                 }
-
             }
         }
 
@@ -366,12 +378,11 @@ public class Damadge:Effect{
     int accuracy;
     Pokemontype Pokemontype;
     
-    public Damadge(int p, int accuracy, Pokemontype Pokemontype){
-        power = p;
-        this.accuracy = accuracy;
-        this.Pokemontype = Pokemontype;
+    public Damadge(List<String> parameters){
+        power = int.Parse(parameters[0]);
+        this.accuracy = int.Parse(parameters[1]);
+        this.Pokemontype = Globaldata.Pokemontypes[parameters[2]];
     }
-
     public override bool Play(Team a, Team d){
         int randomnr = Random.Shared.Next(100);
         Pokemonentity attacker;
