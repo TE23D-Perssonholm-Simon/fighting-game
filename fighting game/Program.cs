@@ -9,81 +9,56 @@ string Pokemontypechart = """C:\Users\simon.perssonholm\Documents\prog1\fighting
 Globaldata.Loaddata("hi",Pokemontypechart);
 
 
-
-void match(Player player1, Player player2){
-    Action move1;
+List<Team> switcher(List<Team> teams){
+    Team leadteam = teams[0];
+    teams[0] = teams[1];
+    teams[1] = leadteam;
+    return teams;
+}
+void match(Team player1, Team player2){
     Console.Clear();
     System.Console.WriteLine("secondplayer to move (press enter to progress)");
     Console.ReadLine();
-    Action move2;
-    bool fainted1 = false;
-    bool fainted2 = false;
-    while (true){
-        move1 = player1.Makemove(player2);
-        move2 = player2.Makemove(player1);
-        if (move1.priority == move2.priority){
-            if (player1.team1.pokemons[0].speed >= player2.team1.pokemons[0].speed){
-                player1.Play(move1,player2);
-                if (player2.team1.pokemons[0].hp > 0){
-                    player2.Play(move2,player1);
-                }
-                else{
-                    fainted2 = true;
-                }
-            }
-            else{
-                player2.Play(move2,player1);
-                if (player1.team1.pokemons[0].hp > 0){
-                    player1.Play(move1,player2);
-                }
-                else{
-                    fainted1 = true;
-                }
-            }
-            
-        }
-        else if(move1.priority > move2.priority){
-            player1.Play(move1,player2);
-            if (player2.team1.pokemons[0].hp > 0){
-                player2.Play(move2,player1);
-            }
-            else{
-                fainted2 = true;
+    List<Team> teamorder = new List<Team>();
+    teamorder.Add(player1);
+    teamorder.Add(player2);
+    
+    bool matchon = true;
+    while (matchon){
+        teamorder[0].Makemove(teamorder[1]);
+        teamorder[1].Makemove(teamorder[0]);
+        if (teamorder[0].action.priority == teamorder[1].action.priority){
+            if (teamorder[1].pokemons[0].speed > teamorder[0].pokemons[0].speed){
+                teamorder = switcher(teamorder);
             }
         }
-        else{
-            player2.Play(move2,player1);
-            if (player1.team1.pokemons[0].hp > 0){
-                player1.Play(move1,player2);
-            }
-            else{
-                fainted1 = true;
-            }
-            
+        else if(teamorder[1].action.priority > teamorder[0].action.priority){
+            teamorder = switcher(teamorder);
         }
+        teamorder[0].play(teamorder[1]);
+        teamorder[1].play(teamorder[0]);
+        Console.ReadLine();
 
-        if (fainted1){
-            if (player1.Faint(player2.team1)){
-                System.Console.WriteLine($"{player1.name} won!!!");
-                Console.ReadLine();
-                break;
+        foreach (Team x in Globaldata.faintorder){
+            if (matchon){
+            if (x.makefaint()){
+                for (int i = 0;i<teamorder.Count; i++){
+                    if (teamorder[i].playername == x.playername){
+                        System.Console.WriteLine($"{teamorder[i - 1].playername} won!!!");
+                        System.Console.WriteLine($"{teamorder[i].playername} is a loser L");
+                        matchon = false;
+                    }
+                }
             }
-            
-        }
-        if (fainted2){
-            if (player2.Faint(player1.team1)){
-                System.Console.WriteLine($"{player2.name} won!!!");
-                Console.ReadLine();
-                break;
             }
         }
-        if (fainted1){
-            System.Console.WriteLine($"{player1.team1.pokemons[0]} switched in");
+        if (matchon){
+            foreach (Team x in Globaldata.faintorder){
+                System.Console.WriteLine($"{x.playername} switched to {x.pokemons[0].basepokemon.name}");
+            }
         }
-        if (fainted2){
-            System.Console.WriteLine($"{player2.team1.pokemons[0]} switched in");
-        }
-
+        
+        
 
     }
 }
@@ -93,7 +68,7 @@ public static class Globaldata{
     public static Dictionary<string,Pokemontype> Pokemontypes = new Dictionary<string, Pokemontype>();
 
     public static Dictionary<string,Team> teamcollection = new Dictionary<string, Team>();
-    
+    public static List<Team> faintorder = new List<Team>();
    
     public static List<string> Pokemontypechartlines;
     public static void Loaddata(string pokemons, string Pokemontypechart){
@@ -109,12 +84,18 @@ public static class Globaldata{
                 Type effecttype = Type.GetType(Pokemontypechartlines[g]);
                 if (effecttype != null){
                     Effect effect = (Effect)Activator.CreateInstance(effecttype);
+                    
                 }
 
             }
         }
 
 
+    }
+    public static void addfaint(Team one){
+        if (!faintorder.Contains(one)){
+            faintorder.Add(one);
+        }
     }
     public static string Ask(string title, List<string> keys){
         int cursor = 0;
@@ -149,46 +130,65 @@ public static class Globaldata{
 }
 
 
-public class Player{
-    public Team team1;
-    public string name;
-    public Player(Team t){
-        team1 = t;
-    }
+public class Team{
+    public List<Pokemonentity> pokemons = new List<Pokemonentity>();
+    public string playername;
 
-    public bool Play(Action damove,Player defender){
-        Team def = defender.team1;
-        damove.execute(team1,def);
-        if (defender.team1.pokemons[0].hp == 0){
-            return false;
+    
+
+    public Action action;
+    public void play(Team opponent){
+        if (action != null){
+            action.execute(this,opponent);
         }
-        return true;
+    }
+    public Team(List<Pokemonentity> team){
+        pokemons = team;
     }
 
-    public bool Faint(Team opponent){
-        List<string> options = new List<string>();
-        string svar;
-        if (team1.pokemons.Count > 1){
-            for(int i = 1; i < options.Count; i++){
-                options.Add(team1.pokemons[i].basepokemon.name);
-                
-            }
-            svar = Globaldata.Ask("Switch to what pokemon?", options);
-            for (int i = 0; i<team1.pokemons.Count; i++){
-                if (team1.pokemons[i].basepokemon.name == svar){
-                    new Switcheroo(i).execute(team1,opponent);
-                    return true;
-                }
-            }
+    public void Faint(int priority){
+        Globaldata.addfaint(this);
+        action = null;
+    }
+
+    public bool makefaint(){
+        System.Console.WriteLine($"{playername}s turn press enter to continue");
+        Console.ReadLine();
+        if (pokemons.Count > 1){
+            Switcheroo theswitch = makeswitch();
+            pokemons.RemoveAt(0);
+            theswitch.switchto -= 1;
+            theswitch.execute(this,this);
+            return false;
         }
         else{
             return true;
         }
-        return true;
     }
 
-    public Action Makemove(Player opponent){
-        Pokemonentity Leadpokemon = team1.pokemons[0];
+    public Switcheroo makeswitch(){
+    while (true){
+        List<string> options = new List<string>();
+        string svar;
+        foreach(Pokemonentity x in pokemons){
+            options.Add(x.basepokemon.name);
+                
+        }
+        svar = Globaldata.Ask("Switch to what pokemon?", options);
+        for (int i = 1; i<pokemons.Count; i++){
+            if (pokemons[i].basepokemon.name == svar){
+                
+                return new Switcheroo(i);;
+            }
+        }
+        System.Console.WriteLine($"cant switch to {pokemons[0]} because it is already active");
+    }
+    }
+    public void Makemove(Team opponent){
+        Console.Clear();
+        System.Console.WriteLine($"{playername}s turn press enter to continue");
+        Console.ReadLine();
+        Pokemonentity Leadpokemon = pokemons[0];
         while (true){
         System.Console.WriteLine("choose action");
         List<string> options = new List<string>();
@@ -197,14 +197,15 @@ public class Player{
         string svar = Globaldata.Ask("choose action",options);
         if (svar == "battle"){
             options.Clear();
-            foreach (Move x in team1.pokemons[0].moves){
+            foreach (Move x in pokemons[0].moves){
                 options.Add(x.name);
             }
             options.Add("Go back");
             svar = Globaldata.Ask("Choose a move",options);
-            foreach (Move x in team1.pokemons[0].moves){
+            foreach (Move x in pokemons[0].moves){
                 if (x.name == svar){
-                    return x;
+                    action = x;
+                    return;
                 }
 
             }
@@ -212,35 +213,6 @@ public class Player{
         }
         else if (svar == "switch"){
             options.Clear();
-            foreach(Pokemonentity x in team1.pokemons){
-                options.Add(x.basepokemon.name);
-                
-            }
-            options.Add("Go back");
-            svar = Globaldata.Ask("Switch to what pokemon?", options);
-            for (int i = 0; i<team1.pokemons.Count; i++){
-                if (team1.pokemons[i].basepokemon.name == svar){
-                    return new Switcheroo(i);
-                }
-            }
-        }
-        }
-        
-    }
-}
-
-public class Team{
-    public List<Pokemonentity> pokemons = new List<Pokemonentity>();
-    public bool faintedthisturn;
-    
-    public Team(List<Pokemonentity> team){
-        pokemons = team;
-    }
-
-    public void faint(){
-        List<string> options = new List<string>();
-        faintedthisturn = true;
-        string svar;
             foreach(Pokemonentity x in pokemons){
                 options.Add(x.basepokemon.name);
                 
@@ -249,11 +221,13 @@ public class Team{
             svar = Globaldata.Ask("Switch to what pokemon?", options);
             for (int i = 0; i<pokemons.Count; i++){
                 if (pokemons[i].basepokemon.name == svar){
-                    Action switchto = new Switcheroo(i);
-                    switchto.execute(this,this);
+                    action = new Switcheroo(i);
+                    return;
                 }
             }
-
+        }
+        }
+        
     }
 }
 public class Pokemonentity{
@@ -298,7 +272,7 @@ public abstract class Action{
 
 
 public class Switcheroo:Action{
-    int switchto;
+    public int switchto;
     new public int priority = 10;
     public Switcheroo(int s){
         switchto = s;
@@ -314,6 +288,32 @@ public class Switcheroo:Action{
     }
 }
 
+public class Faint:Action{
+    new public int priority;
+
+    public Faint(int priority){
+        this.priority = priority;
+    }
+    public override void execute(Team attack, Team defend){
+        if (attack.pokemons.Count > 1){
+            attack.pokemons.RemoveAt(0);
+            List<string> options = new List<string>();
+            string svar;
+            foreach(Pokemonentity x in attack.pokemons){
+                    options.Add(x.basepokemon.name);
+                
+                }
+            svar = Globaldata.Ask("Switch to what pokemon?", options);
+            for (int i = 0; i<attack.pokemons.Count; i++){
+                if (attack.pokemons[i].basepokemon.name == svar){
+                    Action switchto = new Switcheroo(i);
+                    switchto.execute(attack,attack);
+                }
+            }
+        }
+    }
+}
+
 public class Move:Action{
     public string name;
     new public int priority;
@@ -326,9 +326,8 @@ public class Move:Action{
         priority = p;
     }
     public override void execute(Team one, Team two)
-    {
+{
         Effect localdamadgeeffect = damadgeeffect;
-        
         Pokemonentity attacker = one.pokemons[0];
         Pokemonentity defender = two.pokemons[0];
         foreach (Statuseffekt x in attacker.statuseffekts){
