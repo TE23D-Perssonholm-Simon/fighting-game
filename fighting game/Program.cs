@@ -440,13 +440,13 @@ public class Pokemon{
     public Pokemontype Pokemontype1;
     public Pokemontype Pokemontype2;
 
-    public Pokemon(int hp, int attack, int def, int speed, Pokemontype Pokemontype1, Pokemontype Pokemontype2){
-        this.hp = hp;
-        this.attack = attack;
-        this.def = def;
-        this.speed = speed;
-        this.Pokemontype1 = Pokemontype1;
-        this.Pokemontype2 = Pokemontype2;
+    public Pokemon(List<string> strings){
+        this.hp = int.Parse(strings[0]);
+        this.attack = int.Parse(strings[1]);
+        this.def = int.Parse(strings[2]);
+        this.speed = int.Parse(strings[3]);
+        this.Pokemontype1 = Globaldata.Pokemontypes[strings[4]];
+        this.Pokemontype2 = Globaldata.Pokemontypes[strings[5]];
     }
 
 }
