@@ -9,6 +9,7 @@ using Microsoft.VisualBasic;
 string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 string Pokemontypechart = Path.Combine(projectDirectory, "pokemontypechart.txt");
 Globaldata.Loaddata("hi", Pokemontypechart);
+Console.Clear();
 
 match(Globaldata.teamcollection[0],Globaldata.teamcollection[1]);
 
@@ -34,6 +35,7 @@ void match(Team player1, Team player2)
     {
         teamorder[0].Makemove(teamorder[1]);
         teamorder[1].Makemove(teamorder[0]);
+        Console.Clear();
         if (teamorder[0].action.priority == teamorder[1].action.priority)
         {
             if (teamorder[1].pokemons[0].speed > teamorder[0].pokemons[0].speed)
@@ -124,14 +126,13 @@ public class Damadge : Effect
     }
     public override bool Play(Team a, Team d)
     {
-        System.Console.WriteLine("non null");
         int randomnr = Random.Shared.Next(100);
         Pokemonentity attacker;
         attacker = a.pokemons[0];
         Pokemonentity defender = d.pokemons[0];
         if (randomnr > accuracy)
         {
-            System.Console.WriteLine("missed");
+            System.Console.WriteLine("Missed");
             return false;
         }
         float crit = 1;
@@ -151,9 +152,7 @@ public class Damadge : Effect
             return false;
         }
         int damadge = (int)(((40 * crit + 2) * power * attacker.attack / defender.def / 50 + 2) * stab * Pokemontypeadvantage);
-        System.Console.WriteLine(damadge);
-        System.Console.WriteLine(defender.hp);
-        defender.hp = -damadge;
+        defender.hp -= damadge;
         if (defender.hp > 0)
         {
             System.Console.WriteLine($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");

@@ -52,6 +52,14 @@ flying
 cut
 end
 e
+first
+Charizard
+cut
+cut
+cut
+cut
+end
+second
 Charizard
 cut
 cut
@@ -59,8 +67,8 @@ cut
 cut
 end
 e
-Charizard
+first
 end
-Charizard
+second
 end
 e

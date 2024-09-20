@@ -48,7 +48,7 @@ public class Pokemonentity
     public Pokemonentity(List<string> strings)
     {
         
-        basepokemon = Globaldata.Pokedex[strings[0]];
+        basepokemon = Globaldata.Pokedex[strings[1]];
         hp = basepokemon.hp;
         def = basepokemon.def;
         attack = basepokemon.attack;
@@ -56,10 +56,9 @@ public class Pokemonentity
         Pokemontype1 = basepokemon.Pokemontype1;
         Pokemontype2 = basepokemon.Pokemontype2;
         maxhp = hp;
-        moves.Add(Globaldata.movedict[strings[1]]);
         moves.Add(Globaldata.movedict[strings[2]]);
         moves.Add(Globaldata.movedict[strings[3]]);
         moves.Add(Globaldata.movedict[strings[4]]);
-        System.Console.WriteLine(hp);
+        moves.Add(Globaldata.movedict[strings[5]]);
     }
 }
