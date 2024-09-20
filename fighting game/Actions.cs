@@ -49,6 +49,9 @@ public class Move : Action
                 x.Play(one, two);
             }
         }
+        if (defender.hp < 0){
+            two.Faint(10);
+        }
 
     }
 

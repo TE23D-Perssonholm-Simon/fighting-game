@@ -6,12 +6,16 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 
+//fixa det visuella
+//fixa faint
+//fixa game end
+
 string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 string Pokemontypechart = Path.Combine(projectDirectory, "pokemontypechart.txt");
 Globaldata.Loaddata("hi", Pokemontypechart);
 Console.Clear();
 
-match(Globaldata.teamcollection[0],Globaldata.teamcollection[1]);
+match(Globaldata.teamcollection[0], Globaldata.teamcollection[1]);
 
 List<Team> switcher(List<Team> teams)
 {
@@ -55,18 +59,28 @@ void match(Team player1, Team player2)
         {
             if (matchon)
             {
+
                 if (x.makefaint())
                 {
                     for (int i = 0; i < teamorder.Count; i++)
                     {
+
                         if (teamorder[i].playername == x.playername)
                         {
-                            System.Console.WriteLine($"{teamorder[i - 1].playername} won!!!");
+
+                            int g = 0;
+                            if (i == 0)
+                            {
+                                g = 1;
+                            }
+                            System.Console.WriteLine($"{teamorder[g].playername} won!!!");
                             System.Console.WriteLine($"{teamorder[i].playername} is a loser L");
+                            Console.ReadLine();
                             matchon = false;
                         }
                     }
                 }
+
             }
         }
         if (matchon)
