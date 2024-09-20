@@ -76,8 +76,8 @@ public class Switcheroo : Action
         Pokemonentity leadpokemon = attack.pokemons[0];
         attack.pokemons[0] = attack.pokemons[switchto];
         attack.pokemons[switchto] = leadpokemon;
-        System.Console.WriteLine($"{leadpokemon} switched out");
-        System.Console.WriteLine($"{attack.pokemons[0]} switched in");
+        System.Console.WriteLine($"{leadpokemon.basepokemon.name} switched out");
+        System.Console.WriteLine($"{attack.pokemons[0].basepokemon.name} switched in");
 
     }
 }

@@ -16,9 +16,7 @@ public static class Globaldata
     public static int loadeffect(int g)
     {
         Type effecttype = effectclassdict[Pokemontypechartlines[g]];
-        
         g++;
-        
         List<string> strings = new List<string>();
         while (Pokemontypechartlines[g] != "end")
         {
@@ -149,12 +147,6 @@ public static class Globaldata
 
 
         }
-        
-        
-    
-        
-
-
     }
     public static void addfaint(Team one)
     {
@@ -165,13 +157,16 @@ public static class Globaldata
     }
     public static string Ask(string title, List<string> keys)
     {
+        int consoleWidth = Console.WindowWidth;
         int cursor = 0;
         while (true)
         {
             Console.Clear();
+            Console.SetCursorPosition((consoleWidth - title.Length)/2,0);
             System.Console.WriteLine(title);
             for (int i = 0; i < keys.Count; i++)
             {
+                Console.SetCursorPosition((consoleWidth - keys[i].Length)/2,Console.CursorTop);
                 if (i == cursor)
                 {
                     Console.Write("\x1b[47m\x1b[30m");
@@ -184,6 +179,57 @@ public static class Globaldata
                     Console.WriteLine(keys[i]);
                 }
             }
+            string input = Console.ReadKey().Key.ToString().ToLower();
+            if (input == "w")
+            {
+                if (cursor != 0)
+                {
+                    cursor--;
+                }
+            }
+            if (input == "s" && cursor + 1 < keys.Count)
+            {
+                cursor++;
+            }
+            if (input == "enter")
+            {
+                return (keys[cursor]);
+            }
+        }
+    }
+
+    public static void display(int xpos, List<string> strings){
+        foreach (string x in strings){
+            Console.SetCursorPosition(xpos,Console.CursorTop);
+            System.Console.WriteLine(x);
+        }
+    }
+    public static string battleask(string title, List<string> keys,List<string> left, List<string> right)
+    {
+        int consoleWidth = Console.WindowWidth;
+        int cursor = 0;
+        while (true)
+        {
+            Console.Clear();
+            Console.SetCursorPosition((consoleWidth - title.Length)/2,0);
+            System.Console.WriteLine(title);
+            for (int i = 0; i < keys.Count; i++)
+            {
+                Console.SetCursorPosition((consoleWidth - keys[i].Length)/2,Console.CursorTop);
+                if (i == cursor)
+                {
+                    Console.Write("\x1b[47m\x1b[30m");
+                    Console.Write(keys[i]);
+                    Console.WriteLine("\x1b[0m");
+
+                }
+                else
+                {
+                    Console.WriteLine(keys[i]);
+                }
+            }
+            display(0,left);
+            display(consoleWidth - 10, right);
             string input = Console.ReadKey().Key.ToString().ToLower();
             if (input == "w")
             {

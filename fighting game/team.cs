@@ -112,8 +112,6 @@ public class Team
                 }
                 options.Add("Go back");
                 svar = Globaldata.Ask("Switch to what pokemon?", options);
-                System.Console.WriteLine(svar);
-                Console.ReadLine();
                 if (svar == pokemons[0].basepokemon.name){
                     System.Console.WriteLine($"Cant switch to {pokemons[0].basepokemon.name} because it is already active");
                     Console.ReadLine();
