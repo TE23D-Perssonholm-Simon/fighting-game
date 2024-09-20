@@ -13,7 +13,7 @@ public class Pokemontype
 
 public class Pokemon
 {
-    public int hp, attack, def, speed;
+    public int hp, attack, def, speed ,spattack,spdef;
     public string name;
 
     public Pokemontype Pokemontype1;
@@ -27,10 +27,12 @@ public class Pokemon
         this.hp = int.Parse(strings[1]);
         this.attack = int.Parse(strings[2]);
         this.def = int.Parse(strings[3]);
-        this.speed = int.Parse(strings[4]);
-        this.Pokemontype1 = Globaldata.Pokemontypes[strings[5]];
-        this.Pokemontype2 = Globaldata.Pokemontypes[strings[6]];
-        for (int i = 7; i<strings.Count(); i++){
+        spattack = int.Parse(strings[4]);
+        spdef = int.Parse(strings[5]);
+        this.speed = int.Parse(strings[6]);
+        this.Pokemontype1 = Globaldata.Pokemontypes[strings[7]];
+        this.Pokemontype2 = Globaldata.Pokemontypes[strings[8]];
+        for (int i = 9; i<strings.Count(); i++){
             learnablemoves.Add(Globaldata.movedict[strings[i]]);
         }
         
@@ -40,7 +42,7 @@ public class Pokemon
 public class Pokemonentity
 {
     public Pokemon basepokemon;
-    public int hp, maxhp, def, attack, speed;
+    public int hp, maxhp, def, attack, speed,spattack,spdef;
     public Pokemontype Pokemontype1, Pokemontype2;
     public Statuseffekt staticeffekt = null;
     public List<Statuseffekt> statuseffekts = new List<Statuseffekt>();
@@ -51,11 +53,14 @@ public class Pokemonentity
         basepokemon = Globaldata.Pokedex[strings[1]];
         hp = basepokemon.hp;
         def = basepokemon.def;
+        spdef = basepokemon.spdef;
         attack = basepokemon.attack;
+        spattack = basepokemon.spattack;
         speed = basepokemon.speed;
         Pokemontype1 = basepokemon.Pokemontype1;
         Pokemontype2 = basepokemon.Pokemontype2;
         maxhp = hp;
+
         moves.Add(Globaldata.movedict[strings[2]]);
         moves.Add(Globaldata.movedict[strings[3]]);
         moves.Add(Globaldata.movedict[strings[4]]);

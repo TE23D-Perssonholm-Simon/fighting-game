@@ -15,8 +15,8 @@ public static class Globaldata
     public static Dictionary<string, Type> effectclassdict = new Dictionary<string, Type>();
     public static int loadeffect(int g)
     {
-        
         Type effecttype = effectclassdict[Pokemontypechartlines[g]];
+        
         g++;
         
         List<string> strings = new List<string>();
@@ -26,8 +26,9 @@ public static class Globaldata
             g++;
         }
         g++;
+        
         Effect theeffect = (Effect)Activator.CreateInstance(effecttype, strings);
-        Globaldata.effectdict.Add(strings[strings.Count -1], theeffect);
+        Globaldata.effectdict.Add(strings[0], theeffect);
         return g;
     }
     public static int loadmove(int g)
@@ -55,6 +56,8 @@ public static class Globaldata
         g++;
         Pokemon dapokemon = new Pokemon(strings);
         Pokedex[strings[0]] = dapokemon;
+        System.Console.WriteLine(strings[0]);
+        Console.ReadLine();
         return g;
 
     }
@@ -92,7 +95,8 @@ public static class Globaldata
     public static void Loaddata(string pokemons, string Pokemontypechart)
     {
         int g = 0;
-        effectclassdict["dmg"] = typeof(Damadge);
+        effectclassdict["Special"] = typeof(Special);
+        effectclassdict["Physical"] = typeof(Physical);
         Globaldata.Pokemontypechartlines = new List<string>(File.ReadAllLines(Pokemontypechart));
         for (int i = 0; i < 16; i++)
         {

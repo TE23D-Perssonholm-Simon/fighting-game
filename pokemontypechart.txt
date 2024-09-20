@@ -30,45 +30,121 @@ psychic
 ice
 dragon
 empty type
-dmg
-50
-95
-normal
-cut
+Special
+Flamethrower
+90
+100
+fire
+end
+Special
+Energy Ball
+90
+100
+grass
+end
+Special
+Surf
+90
+100
+water
 end
 e
-cut
-cut
+Flamethrower
+Flamethrower
+0
+end
+Energy Ball
+Energy Ball
+0
+end
+Surf
+Surf
 0
 end
 e
 Charizard
 266
+155
+144
 200
 157
 184
 fire
 flying
-cut
+Flamethrower
+end
+Venusaur
+270
+152
+153
+184
+184
+148
+grass
+poison
+Energy Ball
+end
+Blastoise
+268
+153
+184
+157
+193
+144
+water
+empty type
+Surf
 end
 e
 first
 Charizard
-cut
-cut
-cut
-cut
+Flamethrower
+Flamethrower
+Flamethrower
+Flamethrower
 end
 second
 Charizard
-cut
-cut
-cut
-cut
+Flamethrower
+Flamethrower
+Flamethrower
+Flamethrower
+end
+venusaur1
+Venusaur
+Energy Ball
+Energy Ball
+Energy Ball
+Energy Ball
+end
+venusaur2
+Venusaur
+Energy Ball
+Energy Ball
+Energy Ball
+Energy Ball
+end
+blastoise1
+Blastoise
+Surf
+Surf
+Surf
+Surf
+end
+blastoise2
+Blastoise
+Surf
+Surf
+Surf
+Surf
 end
 e
 first
+venusaur1
+blastoise1
 end
 second
+venusaur2
+blastoise2
 end
 e
