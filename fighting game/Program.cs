@@ -9,6 +9,7 @@ using Microsoft.VisualBasic;
 string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 string Pokemontypechart = Path.Combine(projectDirectory, "pokemontypechart.txt");
 Globaldata.Loaddata("hi", Pokemontypechart);
+
 match(Globaldata.teamcollection[0],Globaldata.teamcollection[1]);
 
 List<Team> switcher(List<Team> teams)
@@ -20,9 +21,10 @@ List<Team> switcher(List<Team> teams)
 }
 void match(Team player1, Team player2)
 {
-    Console.Clear();
-    System.Console.WriteLine("secondplayer to move (press enter to progress)");
-    Console.ReadLine();
+    System.Console.WriteLine("player 1 choose your name");
+    player1.playername = Console.ReadLine();
+    System.Console.WriteLine("player 2 choose your name");
+    player2.playername = Console.ReadLine();
     List<Team> teamorder = new List<Team>();
     teamorder.Add(player1);
     teamorder.Add(player2);
@@ -122,12 +124,14 @@ public class Damadge : Effect
     }
     public override bool Play(Team a, Team d)
     {
+        System.Console.WriteLine("non null");
         int randomnr = Random.Shared.Next(100);
         Pokemonentity attacker;
         attacker = a.pokemons[0];
         Pokemonentity defender = d.pokemons[0];
         if (randomnr > accuracy)
         {
+            System.Console.WriteLine("missed");
             return false;
         }
         float crit = 1;
@@ -143,9 +147,12 @@ public class Damadge : Effect
         float Pokemontypeadvantage = (Globaldata.Pokemontypechartlines[Pokemontype.chartnr][defender.Pokemontype1.chartnr] - '0') * (Globaldata.Pokemontypechartlines[Pokemontype.chartnr][defender.Pokemontype2.chartnr] - '0') / 4;
         if (Pokemontypeadvantage == 0)
         {
+            System.Console.WriteLine("is immune");
             return false;
         }
         int damadge = (int)(((40 * crit + 2) * power * attacker.attack / defender.def / 50 + 2) * stab * Pokemontypeadvantage);
+        System.Console.WriteLine(damadge);
+        System.Console.WriteLine(defender.hp);
         defender.hp = -damadge;
         if (defender.hp > 0)
         {

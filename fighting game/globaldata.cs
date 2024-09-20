@@ -1,5 +1,9 @@
+using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
+
 public static class Globaldata
 {
+    public static List<string> Pokemontypechartlines;   
     public static Dictionary<string, Pokemon> Pokedex = new Dictionary<string, Pokemon>();
     public static Dictionary<string, Pokemontype> Pokemontypes = new Dictionary<string, Pokemontype>();
     public static Dictionary<string, Pokemonentity> pokeid = new Dictionary<string, Pokemonentity>();
@@ -8,14 +12,13 @@ public static class Globaldata
     public static List<Team> faintorder = new List<Team>();
 
     public static Dictionary<string, Effect> effectdict = new Dictionary<string, Effect>();
-
-    public static List<string> Pokemontypechartlines;
     public static Dictionary<string, Type> effectclassdict = new Dictionary<string, Type>();
     public static int loadeffect(int g)
     {
-
+        
         Type effecttype = effectclassdict[Pokemontypechartlines[g]];
         g++;
+        
         List<string> strings = new List<string>();
         while (Pokemontypechartlines[g] != "end")
         {
@@ -24,13 +27,11 @@ public static class Globaldata
         }
         g++;
         Effect theeffect = (Effect)Activator.CreateInstance(effecttype, strings);
-        Globaldata.effectdict.Add(strings[-1], theeffect);
+        Globaldata.effectdict.Add(strings[strings.Count -1], theeffect);
         return g;
     }
     public static int loadmove(int g)
     {
-
-
         List<string> strings = new List<string>();
         while (Pokemontypechartlines[g] != "end")
         {
@@ -59,6 +60,7 @@ public static class Globaldata
     }
     public static int loadpokemonentity(int g)
     {
+        
         List<string> strings = new List<string>();
         while (Pokemontypechartlines[g] != "end")
         {
@@ -68,6 +70,7 @@ public static class Globaldata
         g++;
         Pokemonentity dapokemon = new Pokemonentity(strings);
         pokeid[strings[0]] = dapokemon;
+        
         return g;
 
     }
@@ -89,55 +92,63 @@ public static class Globaldata
     public static void Loaddata(string pokemons, string Pokemontypechart)
     {
         int g = 0;
-        try{
         effectclassdict["dmg"] = typeof(Damadge);
-        List<string> Pokemontypechartlines = new List<string>(File.ReadAllLines(Pokemontypechart));
+        Globaldata.Pokemontypechartlines = new List<string>(File.ReadAllLines(Pokemontypechart));
         for (int i = 0; i < 16; i++)
         {
             string name = Pokemontypechartlines[16 + i];
             Pokemontypes.Add(name, new Pokemontype(name, i));
         }
-        }
-        catch(Exception e){
-            System.Console.WriteLine(e);
-        }
-        try{
+        g = 32;
         while (g < Pokemontypechartlines.Count)
         {
+            
             List<Effect> effects = new List<Effect>();
+            
             while (Pokemontypechartlines[g] != "e")
             {
+                System.Console.WriteLine(g);
                 g = loadeffect(g);
             }
+            System.Console.WriteLine("effectsloaded");
+            Console.ReadLine();
             g++;
             
             while (Pokemontypechartlines[g] != "e")
             {
                 g = loadmove(g);
             }
+            System.Console.WriteLine("moves loaded");
+            Console.ReadLine();
             g++;
             while (Pokemontypechartlines[g] != "e")
             {
                 g = loadpokemon(g);
+                
             }
+            System.Console.WriteLine("Pokemon loaded");
+            Console.ReadLine();
             g++;
             while (Pokemontypechartlines[g] != "e"){
                 g = loadpokemonentity(g);
             }
+            System.Console.WriteLine("pokemon entities loaded");
+            Console.ReadLine();
             g++;
             while (Pokemontypechartlines[g] != "e")
             {
                 g = loadteam(g);
             }
+            System.Console.WriteLine("teams loaded");
+            Console.ReadLine();
             g++;
 
 
         }
-        }
-        catch(Exception e){
-            System.Console.WriteLine(e);
-            Console.ReadLine();
-        }
+        
+        
+    
+        
 
 
     }

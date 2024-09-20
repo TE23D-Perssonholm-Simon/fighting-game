@@ -12,7 +12,7 @@ public class Move : Action
         {
             effects.Add(Globaldata.effectdict[strings[i]]);
         }
-        priority = int.Parse(strings[-1]);
+        priority = int.Parse(strings[strings.Count - 1]);
     }
     public override void execute(Team one, Team two)
     {

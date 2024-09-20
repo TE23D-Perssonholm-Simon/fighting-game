@@ -22,6 +22,7 @@ public class Pokemon
 
     public Pokemon(List<string> strings)
     {
+        
         this.name = strings[0];
         this.hp = int.Parse(strings[1]);
         this.attack = int.Parse(strings[2]);
@@ -32,6 +33,7 @@ public class Pokemon
         for (int i = 7; i<strings.Count(); i++){
             learnablemoves.Add(Globaldata.movedict[strings[i]]);
         }
+        
     }
 
 }
@@ -45,6 +47,7 @@ public class Pokemonentity
     public List<Move> moves = new List<Move>();
     public Pokemonentity(List<string> strings)
     {
+        
         basepokemon = Globaldata.Pokedex[strings[0]];
         hp = basepokemon.hp;
         def = basepokemon.def;
@@ -52,10 +55,11 @@ public class Pokemonentity
         speed = basepokemon.speed;
         Pokemontype1 = basepokemon.Pokemontype1;
         Pokemontype2 = basepokemon.Pokemontype2;
-        hp = maxhp;
+        maxhp = hp;
         moves.Add(Globaldata.movedict[strings[1]]);
         moves.Add(Globaldata.movedict[strings[2]]);
         moves.Add(Globaldata.movedict[strings[3]]);
         moves.Add(Globaldata.movedict[strings[4]]);
+        System.Console.WriteLine(hp);
     }
 }

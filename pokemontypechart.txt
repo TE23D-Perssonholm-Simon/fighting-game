@@ -57,6 +57,8 @@ cut
 cut
 cut
 cut
+end
+e
 Charizard
 end
 Charizard
