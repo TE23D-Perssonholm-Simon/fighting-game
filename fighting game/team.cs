@@ -6,12 +6,14 @@ public class Team
 
 
     public Action action;
-    public void play(Team opponent)
+    public List<string> play(Team opponent)
     {
+        List<string> displaystrings = new List<string>();
         if (action != null)
         {
-            action.execute(this, opponent);
+            displaystrings = action.execute(this, opponent);
         }
+        return (displaystrings);
     }
     public Team(List<String> strings)
     {
@@ -30,6 +32,7 @@ public class Team
 
     public bool makefaint()
     {
+        Console.Clear();
         System.Console.WriteLine($"{playername}s turn press enter to continue");
         Console.ReadLine();
         if (pokemons.Count > 1)

@@ -53,10 +53,14 @@ void match(Team player1, Team player2)
         {
             teamorder = switcher(teamorder);
         }
+        Globaldata.display(0,7,teamorder[0].play(teamorder[1]));
         Globaldata.display(0,0,player1.Display());
         Globaldata.display(Console.WindowWidth-10,0,player2.Display());
-        teamorder[0].play(teamorder[1]);
-        teamorder[1].play(teamorder[0]);
+        Console.ReadLine();
+        Console.Clear();
+        Globaldata.display(0,7,teamorder[1].play(teamorder[0]));
+        Globaldata.display(0,0,player1.Display());
+        Globaldata.display(Console.WindowWidth-10,0,player2.Display());
         Console.ReadLine();
 
         foreach (Team x in Globaldata.faintorder)

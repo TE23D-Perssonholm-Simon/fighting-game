@@ -14,8 +14,9 @@ public class Move : Action
         }
         priority = int.Parse(strings[strings.Count - 1]);
     }
-    public override void execute(Team one, Team two)
+    public override List<string> execute(Team one, Team two)
     {
+        List<string> displaystrings = new List<string>();
         Effect localdamadgeeffect = damadgeeffect;
         Pokemonentity attacker = one.pokemons[0];
         Pokemonentity defender = two.pokemons[0];
@@ -41,17 +42,22 @@ public class Move : Action
 
             }
         }
-        System.Console.WriteLine(name);
-        if (damadgeeffect.Play(one, two))
+        displaystrings.Add(name);
+        displaystrings.AddRange(damadgeeffect.Play(one, two));
+        if (displaystrings[1] != "false")
         {
             foreach (Effect x in effects)
             {
-                x.Play(one, two);
+                displaystrings.AddRange(x.Play(one, two));
             }
+        }
+        else {
+            displaystrings.RemoveAt(1);
         }
         if (defender.hp < 0){
             two.Faint(10);
         }
+        return displaystrings;
 
     }
 
@@ -59,7 +65,7 @@ public class Move : Action
 public abstract class Action
 {
     public virtual int priority{get; set;} = 0;
-    public abstract void execute(Team attack, Team defend);
+    public abstract List<string> execute(Team attack, Team defend);
 }
 
 
@@ -71,13 +77,15 @@ public class Switcheroo : Action
     {
         switchto = s;
     }
-    public override void execute(Team attack, Team defend)
+    public override List<string> execute(Team attack, Team defend)
     {
+        List<string> displaystrings = new List<string>();
         Pokemonentity leadpokemon = attack.pokemons[0];
         attack.pokemons[0] = attack.pokemons[switchto];
         attack.pokemons[switchto] = leadpokemon;
-        System.Console.WriteLine($"{leadpokemon.basepokemon.name} switched out");
-        System.Console.WriteLine($"{attack.pokemons[0].basepokemon.name} switched in");
+        displaystrings.Add($"{leadpokemon.basepokemon.name} switched out");
+        displaystrings.Add($"{attack.pokemons[0].basepokemon.name} switched in");
+        return displaystrings;
 
     }
 }
@@ -90,7 +98,7 @@ public class Faint : Action
     {
         this.priority = priority;
     }
-    public override void execute(Team attack, Team defend)
+    public override List<string> execute(Team attack, Team defend)
     {
         if (attack.pokemons.Count > 1)
         {
@@ -109,8 +117,11 @@ public class Faint : Action
                 {
                     Action switchto = new Switcheroo(i);
                     switchto.execute(attack, attack);
+                    
                 }
             }
         }
+        return (new List<string>());
     }
+
 }

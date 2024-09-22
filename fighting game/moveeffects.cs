@@ -1,6 +1,6 @@
 public abstract class Effect
 {
-    public abstract bool Play(Team a, Team d);
+    public abstract List<string> Play(Team a, Team d);
     public string failmessage;
 }
 
@@ -17,16 +17,18 @@ public class Special : Effect
         this.accuracy = int.Parse(parameters[2]);
         this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
     }
-    public override bool Play(Team a, Team d)
+    public override List<string> Play(Team a, Team d)
     {
+        List<string> displaystrings = new List<string>();
         int randomnr = Random.Shared.Next(100);
         Pokemonentity attacker;
         attacker = a.pokemons[0];
         Pokemonentity defender = d.pokemons[0];
         if (randomnr > accuracy)
         {
-            System.Console.WriteLine("Missed");
-            return false;
+            displaystrings.Add("false");
+            displaystrings.Add("Missed");
+            return displaystrings;
         }
         float crit = 1;
         float stab;
@@ -43,30 +45,32 @@ public class Special : Effect
         
         if (Pokemontypeadvantage == 0)
         {
-            System.Console.WriteLine("is immune");
-            return false;
+            displaystrings.Add("false");
+            displaystrings.Add($"{defender.basepokemon.name} is immune");
+            return displaystrings;
         }
         else if(Pokemontypeadvantage < 1){
-            System.Console.WriteLine("Not very effective");
+            displaystrings.Add("Not very effective");
         }
         else if(Pokemontypeadvantage > 1){
-            System.Console.WriteLine("SUPER EFFECTIVE");
+            displaystrings.Add("SUPER EFFECTIVE");
         }
         int damadge = (int)(((40 * crit + 2) * power * attacker.spattack / defender.spdef / 50 + 2) * stab * Pokemontypeadvantage);
         defender.hp -= damadge;
         if (defender.hp > 0)
         {
-            System.Console.WriteLine($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
+            displaystrings.Add($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
         }
         else
         {
-            System.Console.WriteLine($"{defender.basepokemon.name} fainted");
+            displaystrings.Add($"{defender.basepokemon.name} fainted");
         }
 
-        return true;
+        return displaystrings;
     }
 
 }
+
 public class Physical : Effect
 {
     int power;
@@ -75,21 +79,22 @@ public class Physical : Effect
 
     public Physical(List<String> parameters)
     {
-        //name = 0
         power = int.Parse(parameters[1]);
         this.accuracy = int.Parse(parameters[2]);
         this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
     }
-    public override bool Play(Team a, Team d)
+    public override List<string> Play(Team a, Team d)
     {
+        List<string> displaystrings = new List<string>();
         int randomnr = Random.Shared.Next(100);
         Pokemonentity attacker;
         attacker = a.pokemons[0];
         Pokemonentity defender = d.pokemons[0];
         if (randomnr > accuracy)
         {
-            System.Console.WriteLine("Missed");
-            return false;
+            displaystrings.Add("false");
+            displaystrings.Add("Missed");
+            return displaystrings;
         }
         float crit = 1;
         float stab;
@@ -101,24 +106,33 @@ public class Physical : Effect
         {
             stab = 1.0f;
         }
-        float Pokemontypeadvantage = (Globaldata.Pokemontypechartlines[Pokemontype.chartnr][defender.Pokemontype1.chartnr] - '0') * (Globaldata.Pokemontypechartlines[Pokemontype.chartnr][defender.Pokemontype2.chartnr] - '0') / 4;
+        float Pokemontypeadvantage = (Globaldata.Pokemontypechartlines[Pokemontype.chartnr][defender.Pokemontype1.chartnr] - '0') * (Globaldata.Pokemontypechartlines[Pokemontype.chartnr][defender.Pokemontype2.chartnr] - '0');
+        Pokemontypeadvantage = Pokemontypeadvantage/4;
+        
         if (Pokemontypeadvantage == 0)
         {
-            System.Console.WriteLine("is immune");
-            return false;
+            displaystrings.Add("false");
+            displaystrings.Add($"{defender.basepokemon.name} is immune");
+            return displaystrings;
+        }
+        else if(Pokemontypeadvantage < 1){
+            displaystrings.Add("Not very effective");
+        }
+        else if(Pokemontypeadvantage > 1){
+            displaystrings.Add("SUPER EFFECTIVE");
         }
         int damadge = (int)(((40 * crit + 2) * power * attacker.attack / defender.def / 50 + 2) * stab * Pokemontypeadvantage);
         defender.hp -= damadge;
         if (defender.hp > 0)
         {
-            System.Console.WriteLine($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
+            displaystrings.Add($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
         }
         else
         {
-            System.Console.WriteLine($"{defender.basepokemon.name} fainted");
+            displaystrings.Add($"{defender.basepokemon.name} fainted");
         }
 
-        return true;
+        return displaystrings;
     }
 
 }
