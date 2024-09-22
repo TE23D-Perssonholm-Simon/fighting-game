@@ -111,22 +111,7 @@ void match(Team player1, Team player2)
 
 
 
-public class Statuseffekt
-{
-    public List<Statuscomponent> components = new List<Statuscomponent>();
-    public Statuseffekt(List<Statuscomponent> comp)
-    {
-        components = comp;
-    }
-}
-public abstract class Statuscomponent
-{
 
-}
-public abstract class Movecomponent : Statuscomponent
-{
-    public abstract Effect run(Effect themove);
-}
 
 
 

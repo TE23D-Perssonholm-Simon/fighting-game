@@ -20,38 +20,32 @@ public class Move : Action
         Effect localdamadgeeffect = damadgeeffect;
         Pokemonentity attacker = one.pokemons[0];
         Pokemonentity defender = two.pokemons[0];
-        foreach (Statuseffekt x in attacker.statuseffekts)
-        {
-            foreach (Statuscomponent e in x.components)
-            {
-                if (e is Movecomponent movecomponent)
-                {
-                    localdamadgeeffect = movecomponent.run(localdamadgeeffect);
-                }
-
+        bool success = true;
+        List<Movehinderer> theeffects = attacker.movehinderer.Values.ToList();
+        List<string> effectmessage = new List<string>();
+        for (int i = 0; i<theeffects.Count && success; i++){
+            effectmessage = theeffects[i].Run(attacker);
+            if (effectmessage[1] == "false"){
+                
+                success = false;
             }
+            effectmessage.RemoveAt(1);
+            displaystrings.AddRange(effectmessage);
         }
-        if (attacker.staticeffekt != null)
-        {
-            foreach (Statuscomponent e in attacker.staticeffekt.components)
-            {
-                if (e is Movecomponent movecomponent)
-                {
-                    localdamadgeeffect = movecomponent.run(localdamadgeeffect);
-                }
 
-            }
-        }
         displaystrings.Add(name);
-        displaystrings.AddRange(damadgeeffect.Play(one, two));
-        if (displaystrings[1] != "false")
+        List<string> damadgeeffectmessage = damadgeeffect.Play(one, two);
+        
+        if (damadgeeffectmessage[0] != "false")
         {
+            displaystrings.AddRange(damadgeeffectmessage);
             foreach (Effect x in effects)
             {
                 displaystrings.AddRange(x.Play(one, two));
             }
         }
         else {
+            displaystrings.AddRange(damadgeeffectmessage);
             displaystrings.RemoveAt(1);
         }
         if (defender.hp < 0){

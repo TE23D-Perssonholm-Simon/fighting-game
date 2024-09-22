@@ -46,6 +46,11 @@ public class Pokemonentity
     public Pokemontype Pokemontype1, Pokemontype2;
     public Statuseffekt staticeffekt = null;
     public List<Statuseffekt> statuseffekts = new List<Statuseffekt>();
+    public Dictionary<string,Movehinderer> movehinderer = new Dictionary<string, Movehinderer>();
+    public Dictionary<string,Statuscomponent> forced = new Dictionary<string, Statuscomponent>();
+    public Dictionary<string,Statuscomponent> noswitch = new Dictionary<string, Statuscomponent>();
+    public Dictionary<string,Statuscomponent> endofturn = new Dictionary<string, Statuscomponent>();
+    public Dictionary<string,Statuscomponent> timer = new Dictionary<string, Statuscomponent>();
     public List<Move> moves = new List<Move>();
     public Pokemonentity(List<string> strings)
     {
