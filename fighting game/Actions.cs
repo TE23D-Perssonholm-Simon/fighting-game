@@ -58,7 +58,7 @@ public class Move : Action
 }
 public abstract class Action
 {
-    public int priority;
+    public virtual int priority{get; set;} = 0;
     public abstract void execute(Team attack, Team defend);
 }
 
@@ -66,7 +66,7 @@ public abstract class Action
 public class Switcheroo : Action
 {
     public int switchto;
-    new public int priority = 10;
+    public override int priority{get; set;} = 10;
     public Switcheroo(int s)
     {
         switchto = s;

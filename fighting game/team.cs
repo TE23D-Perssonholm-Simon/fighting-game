@@ -69,6 +69,19 @@ public class Team
             System.Console.WriteLine($"cant switch to {pokemons[0]} because it is already active");
         }
     }
+    public List<string> Display()
+    {
+        List<string> left = new List<string>();
+        left.Add(playername);
+        left.Add(pokemons[0].basepokemon.name);
+        left.Add(pokemons[0].hp.ToString());
+        left.Add(pokemons[0].Pokemontype1.name);
+        if (pokemons[0].Pokemontype2.name != "empty type")
+        {
+            left.Add(pokemons[0].Pokemontype2.name);
+        }
+        return left;
+    }
     public void Makemove(Team opponent)
     {
         Console.Clear();
@@ -81,7 +94,7 @@ public class Team
             List<string> options = new List<string>();
             options.Add("battle");
             options.Add("switch");
-            string svar = Globaldata.Ask("choose action", options);
+            string svar = Globaldata.battleask("choose action", options);
             if (svar == "battle")
             {
                 options.Clear();
@@ -90,7 +103,7 @@ public class Team
                     options.Add(x.name);
                 }
                 options.Add("Go back");
-                svar = Globaldata.Ask("Choose a move", options);
+                svar = Globaldata.battleask("Choose a move", options);
                 foreach (Move x in pokemons[0].moves)
                 {
                     if (x.name == svar)
@@ -112,7 +125,8 @@ public class Team
                 }
                 options.Add("Go back");
                 svar = Globaldata.Ask("Switch to what pokemon?", options);
-                if (svar == pokemons[0].basepokemon.name){
+                if (svar == pokemons[0].basepokemon.name)
+                {
                     System.Console.WriteLine($"Cant switch to {pokemons[0].basepokemon.name} because it is already active");
                     Console.ReadLine();
                 }
@@ -124,7 +138,7 @@ public class Team
                         return;
                     }
                 }
-                
+
             }
         }
 

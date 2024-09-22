@@ -7,8 +7,8 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 
 //fixa det visuella
-//fixa faint
 //fixa game end
+//fixa namn väljaren
 
 string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 string Pokemontypechart = Path.Combine(projectDirectory, "pokemontypechart.txt");
@@ -33,6 +33,8 @@ void match(Team player1, Team player2)
     List<Team> teamorder = new List<Team>();
     teamorder.Add(player1);
     teamorder.Add(player2);
+    Globaldata.player1 = player1;
+    Globaldata.player2 = player2;
 
     bool matchon = true;
     while (matchon)
@@ -51,6 +53,8 @@ void match(Team player1, Team player2)
         {
             teamorder = switcher(teamorder);
         }
+        Globaldata.display(0,0,player1.Display());
+        Globaldata.display(Console.WindowWidth-10,0,player2.Display());
         teamorder[0].play(teamorder[1]);
         teamorder[1].play(teamorder[0]);
         Console.ReadLine();
@@ -82,7 +86,9 @@ void match(Team player1, Team player2)
                 }
 
             }
+
         }
+        Globaldata.faintorder.Clear();
         if (matchon)
         {
             foreach (Team x in Globaldata.faintorder)

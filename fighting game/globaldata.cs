@@ -13,6 +13,8 @@ public static class Globaldata
 
     public static Dictionary<string, Effect> effectdict = new Dictionary<string, Effect>();
     public static Dictionary<string, Type> effectclassdict = new Dictionary<string, Type>();
+    public static Team player1;
+    public static Team player2;
     public static int loadeffect(int g)
     {
         Type effecttype = effectclassdict[Pokemontypechartlines[g]];
@@ -198,20 +200,21 @@ public static class Globaldata
         }
     }
 
-    public static void display(int xpos, List<string> strings){
+    public static void display(int xpos, int ypos,List<string> strings){
+        Console.CursorTop = ypos;
         foreach (string x in strings){
             Console.SetCursorPosition(xpos,Console.CursorTop);
             System.Console.WriteLine(x);
         }
     }
-    public static string battleask(string title, List<string> keys,List<string> left, List<string> right)
+    public static string battleask(string title, List<string> keys)
     {
         int consoleWidth = Console.WindowWidth;
         int cursor = 0;
         while (true)
         {
             Console.Clear();
-            Console.SetCursorPosition((consoleWidth - title.Length)/2,0);
+            Console.SetCursorPosition((consoleWidth - title.Length)/2,4);
             System.Console.WriteLine(title);
             for (int i = 0; i < keys.Count; i++)
             {
@@ -228,8 +231,13 @@ public static class Globaldata
                     Console.WriteLine(keys[i]);
                 }
             }
-            display(0,left);
-            display(consoleWidth - 10, right);
+            List<string> left = new List<string>();
+            left = player1.Display();
+            List<string> right = new List<string>();
+            right = player2.Display();
+
+            display(0,4,left);
+            display(consoleWidth - 10,4, right);
             string input = Console.ReadKey().Key.ToString().ToLower();
             if (input == "w")
             {
