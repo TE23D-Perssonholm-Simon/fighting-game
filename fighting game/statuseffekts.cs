@@ -11,16 +11,6 @@ public class Statuseffekt
 }
 public abstract class Statuscomponent
 {
-
-}
-public class Movehinderer : Statuscomponent
-{
-    int oddsofstopping;
-    int oddsofremoval;
-    string curemessage;
-    string failmessage;
-    string intromessage;
-
     public void remove(Pokemonentity attacker){
         string id = "";
         if (attacker.staticeffekt.components.Contains(this)){
@@ -41,6 +31,22 @@ public class Movehinderer : Statuscomponent
                 attacker.timer[id] = null;
             }
     }
+}
+public class Movehinderer : Statuscomponent
+{
+    int oddsofstopping;
+    int oddsofremoval;
+    string curemessage;
+    string failmessage;
+    string intromessage;
+
+    public Movehinderer(int stop,int remove,string fail,string intro,string cure){
+        oddsofstopping = stop;
+        oddsofremoval = remove;
+        failmessage = fail;
+        intromessage = intro;
+        curemessage = cure;
+    }
     
     public List<string> Run(Pokemonentity attacker){
         List<string> displaymessage = new List<string>();
@@ -53,7 +59,7 @@ public class Movehinderer : Statuscomponent
             return displaymessage;
         }
         randomnr = Random.Shared.Next(100);
-        if (oddsofremoval < randomnr){
+        if (oddsofstopping < randomnr){
             displaymessage.Add("fail");
             displaymessage.Add(failmessage);
         }

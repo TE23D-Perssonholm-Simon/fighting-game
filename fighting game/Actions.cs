@@ -34,19 +34,20 @@ public class Move : Action
         }
 
         displaystrings.Add(name);
-        List<string> damadgeeffectmessage = damadgeeffect.Play(one, two);
+        List<string> damadgeeffectmessage = damadgeeffect.Play(one, two,0);
         
         if (damadgeeffectmessage[0] != "false")
         {
+            int damadge = int.Parse(damadgeeffectmessage[1]);
             displaystrings.AddRange(damadgeeffectmessage);
             foreach (Effect x in effects)
             {
-                displaystrings.AddRange(x.Play(one, two));
+                displaystrings.AddRange(x.Play(one, two,damadge));
             }
         }
         else {
+            damadgeeffectmessage.RemoveAt(0);
             displaystrings.AddRange(damadgeeffectmessage);
-            displaystrings.RemoveAt(1);
         }
         if (defender.hp < 0){
             two.Faint(10);

@@ -1,3 +1,6 @@
+using System.Buffers;
+using System.Reflection.Metadata;
+
 public class Pokemontype
 {
     public string name;
@@ -43,6 +46,87 @@ public class Pokemonentity
 {
     public Pokemon basepokemon;
     public int hp, maxhp, def, attack, speed,spattack,spdef;
+
+    int _defbuff = 0;
+    public float defbuff
+    {
+        get{
+            if(_defbuff <= 0){
+                return (float)Math.Pow(2,_defbuff);
+            }
+            else{
+                return _defbuff;
+            }
+        }
+        set{
+            _defbuff = (int)value;
+            def = (int)(def*defbuff);
+        }
+    }
+    int _attackbuff = 0;
+    public float attackbuff
+    {
+        get{
+            if(_attackbuff <= 0){
+                return (float)Math.Pow(2,_attackbuff);
+            }
+            else{
+                return _attackbuff;
+            }
+        }
+        set{
+            _attackbuff = (int)value;
+            attack = (int)(attack*attackbuff);
+        }
+    }
+    int _speedbuff = 0;
+    public float speedbuff
+    {
+        get{
+            if(_speedbuff <= 0){
+                return (float)Math.Pow(2,_speedbuff);
+            }
+            else{
+                return _speedbuff;
+            }
+        }
+        set{
+            _speedbuff = (int)value;
+            speed = (int)(speed*speedbuff);
+        }
+    }
+    int _spdefbuff = 0;
+    public float spdefbuff
+    {
+        get{
+            if(_spdefbuff <= 0){
+                return (float)Math.Pow(2,_spdefbuff);
+            }
+            else{
+                return _spdefbuff;
+            }
+        }
+        set{
+            _spdefbuff = (int)value;
+            spdef = (int)(spdef*spdefbuff);
+        }
+    }
+    int _spattackbuff = 0;
+    public float spattackbuff
+    {
+        get{
+            if(_spattackbuff <= 0){
+                return (float)Math.Pow(2,_spattackbuff);
+            }
+            else{
+                return _spattackbuff;
+            }
+        }
+        set{
+            _spattackbuff = (int)value;
+            spattack = (int)(spattack*spattackbuff);
+        }
+    }
     public Pokemontype Pokemontype1, Pokemontype2;
     public Statuseffekt staticeffekt = null;
     public List<Statuseffekt> statuseffekts = new List<Statuseffekt>();

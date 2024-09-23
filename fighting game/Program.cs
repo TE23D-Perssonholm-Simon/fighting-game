@@ -44,6 +44,7 @@ void match(Team player1, Team player2)
         Console.Clear();
         if (teamorder[0].action.priority == teamorder[1].action.priority)
         {
+            // teamorder[1].pokemons[0].defbuff = -4;
             if (teamorder[1].pokemons[0].speed > teamorder[0].pokemons[0].speed)
             {
                 teamorder = switcher(teamorder);

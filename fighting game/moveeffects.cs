@@ -1,6 +1,6 @@
 public abstract class Effect
 {
-    public abstract List<string> Play(Team a, Team d);
+    public abstract List<string> Play(Team a, Team d,int damadge);
     public string failmessage;
 }
 
@@ -17,7 +17,7 @@ public class Special : Effect
         this.accuracy = int.Parse(parameters[2]);
         this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
     }
-    public override List<string> Play(Team a, Team d)
+    public override List<string> Play(Team a, Team d, int dam)
     {
         List<string> displaystrings = new List<string>();
         int randomnr = Random.Shared.Next(100);
@@ -83,7 +83,7 @@ public class Physical : Effect
         this.accuracy = int.Parse(parameters[2]);
         this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
     }
-    public override List<string> Play(Team a, Team d)
+    public override List<string> Play(Team a, Team d,int dam)
     {
         List<string> displaystrings = new List<string>();
         int randomnr = Random.Shared.Next(100);
@@ -121,7 +121,12 @@ public class Physical : Effect
         else if(Pokemontypeadvantage > 1){
             displaystrings.Add("SUPER EFFECTIVE");
         }
-        int damadge = (int)(((40 * crit + 2) * power * attacker.attack / defender.def / 50 + 2) * stab * Pokemontypeadvantage);
+        float burn = 1;
+        if (attacker.staticeffekt.id == "burn"){
+            burn = 0.5f;
+        }
+        int damadge = (int)(((40 * crit + 2) * power * attacker.attack / defender.def / 50 + 2) * stab * Pokemontypeadvantage*burn);
+        displaystrings.Add(damadge.ToString());
         defender.hp -= damadge;
         if (defender.hp > 0)
         {
