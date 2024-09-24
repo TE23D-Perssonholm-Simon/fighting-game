@@ -40,24 +40,26 @@ public class Move : Action
             displaystrings.AddRange(effectmessage);
         }
 
-        displaystrings.Add(name);
-        List<string> damadgeeffectmessage = damadgeeffect.Play(one, two,0);
+        displaystrings.Add($"{one.pokemons[0].basepokemon.name} used {name}");
+        Damadgeeffectdata damadgeeffectmessage = damadgeeffect.Play(one, two,0);
         
-        if (damadgeeffectmessage[0] != "false")
+        if (damadgeeffectmessage.hit == true)
         {
-            int damadge = int.Parse(damadgeeffectmessage[1]);
-            displaystrings.AddRange(damadgeeffectmessage);
+            int damadge = damadgeeffectmessage.damadge;
+            displaystrings.AddRange(damadgeeffectmessage.displaystrings);
             foreach (Effect x in effects)
             {
-                displaystrings.AddRange(x.Play(one, two,damadge));
+                displaystrings.AddRange(x.Play(one, two,damadge).displaystrings);
             }
         }
         else {
-            damadgeeffectmessage.RemoveAt(0);
-            displaystrings.AddRange(damadgeeffectmessage);
+            displaystrings.AddRange(damadgeeffectmessage.displaystrings);
         }
         if (defender.hp < 0){
             two.Faint(10);
+        }
+        if (attacker.hp < 0){
+            one.Faint(9);
         }
         return displaystrings;
 

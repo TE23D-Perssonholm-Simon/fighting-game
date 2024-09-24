@@ -1,4 +1,14 @@
+using System.Security.Cryptography.X509Certificates;
+
 public static class Initialize{
+    //DU MÅSTE FIXA DEEP COPIES ÅT ALLA
+    public static void Loadmove(string name,int priority,Effect effect,List<Effect> effects){
+        List<Effect> effects1 = new List<Effect>();
+        foreach (Effect x in effects){
+            effects1.Add(x);
+        }
+        new Move(name,priority,effect,effects1);
+    }
     public static void loadcode(){
         List<Statuscomponent> components = new List<Statuscomponent>();
         components.Add(new Movehinderer(25,0,"was paralyzed","is paralyzed",""));
@@ -8,7 +18,8 @@ public static class Initialize{
         Console.ReadLine();
         List<Effect> effects = new List<Effect>();
         effects.Add(new Staticeffectgiver(100,"Paralysis"));
-        new Move("Thunder Wave",0,new Statusmove(90),effects);
+        Loadmove("Thunder Wave", 0,new Statusmove(90),effects);
+        
         effects.Clear();
         effects.Add(new Staticeffectgiver(10,"Paralysis"));
         new Move("Thunder Bolt",0,new Special(90,100,Globaldata.Pokemontypes["electric"]),effects);

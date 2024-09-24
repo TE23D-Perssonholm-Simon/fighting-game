@@ -88,6 +88,9 @@ public class Team
         {
             left.Add(pokemons[0].Pokemontype2.name);
         }
+        if (pokemons[0].staticeffekt != null){
+            left.Add(pokemons[0].staticeffekt.id);
+        }
         return left;
     }
     public void Makemove(Team opponent)
