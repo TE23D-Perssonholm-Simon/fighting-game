@@ -4,15 +4,22 @@ public class Move : Action
     new public int priority;
     List<Effect> effects = new List<Effect>();
     Effect damadgeeffect;
-    public Move(List<string> strings)
-    {
-        name = strings[0];
-        this.damadgeeffect = Globaldata.effectdict[strings[1]];
-        for (int i = 2; i < strings.Count - 1; i++)
-        {
-            effects.Add(Globaldata.effectdict[strings[i]]);
-        }
-        priority = int.Parse(strings[strings.Count - 1]);
+    //public Move(List<string> strings)
+    //{
+        //name = strings[0];
+        //this.damadgeeffect = Globaldata.effectdict[strings[1]];
+        //for (int i = 2; i < strings.Count - 1; i++)
+        //{
+            //effects.Add(Globaldata.effectdict[strings[i]]);
+        //}
+        //priority = int.Parse(strings[strings.Count - 1]);
+    //}
+    public Move(string name,int priority,Effect maineffect,List<Effect> effects){
+        this.name = name;
+        this.priority = priority;
+        damadgeeffect = maineffect;
+        this.effects = effects;
+        Globaldata.movedict[name] = this;
     }
     public override List<string> execute(Team one, Team two)
     {

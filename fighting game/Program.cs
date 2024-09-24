@@ -6,13 +6,12 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 
-//fixa det visuella
-//fixa game end
 //fixa namn väljaren
 
 string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 string Pokemontypechart = Path.Combine(projectDirectory, "pokemontypechart.txt");
 Globaldata.Loaddata("hi", Pokemontypechart);
+Initialize.loadcode();
 Console.Clear();
 
 match(Globaldata.teamcollection[0], Globaldata.teamcollection[1]);
@@ -44,8 +43,7 @@ void match(Team player1, Team player2)
         Console.Clear();
         if (teamorder[0].action.priority == teamorder[1].action.priority)
         {
-            // teamorder[1].pokemons[0].defbuff = -4;
-            if (teamorder[1].pokemons[0].speed > teamorder[0].pokemons[0].speed)
+            if (teamorder[1].pokemons[0].speed*teamorder[1].pokemons[0].Paralysis > teamorder[0].pokemons[0].speed*teamorder[1].pokemons[0].Paralysis)
             {
                 teamorder = switcher(teamorder);
             }

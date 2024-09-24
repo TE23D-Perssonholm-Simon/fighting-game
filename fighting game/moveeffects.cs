@@ -1,21 +1,40 @@
 public abstract class Effect
 {
     public abstract List<string> Play(Team a, Team d,int damadge);
-    public string failmessage;
 }
 
+public class Staticeffectgiver:Effect{
+    Statuseffekt statuseffekt;
+    int oddofcausing;
+    string inflictmessage;
+    public Staticeffectgiver(int odds,string effectid){
+        oddofcausing = odds;
+        statuseffekt = Globaldata.statuseffectddict[effectid];
+        this.inflictmessage = statuseffekt.inflictmessage;
+    }   
+    
+    public override List<string> Play(Team a,Team d, int dmg){
+        List<string> displaystrings = new List<string>();
+        int randomnr = Random.Shared.Next(101);
+        if (oddofcausing >= randomnr ){
+            if (d.pokemons[0].staticeffekt != null){
+                displaystrings.Add($"{d.pokemons[0].basepokemon.name} already has a status condition");
+            }
+            else{
+                displaystrings.Add($"{d.pokemons[0].basepokemon.name} {inflictmessage}");
+                d.pokemons[0].staticeffekt = statuseffekt.Clone();
+                d.pokemons[0].staticeffekt.Infect(d.pokemons[0]);
+            }
 
-public class Special : Effect
-{
-    int power;
+        }
+        return displaystrings;
+    }
+    
+}
+public class Statusmove:Effect{
     int accuracy;
-    Pokemontype Pokemontype;
-
-    public Special(List<String> parameters)
-    {
-        power = int.Parse(parameters[1]);
-        this.accuracy = int.Parse(parameters[2]);
-        this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
+    public Statusmove(int accuracy){
+        this.accuracy = accuracy;
     }
     public override List<string> Play(Team a, Team d, int dam)
     {
@@ -24,7 +43,45 @@ public class Special : Effect
         Pokemonentity attacker;
         attacker = a.pokemons[0];
         Pokemonentity defender = d.pokemons[0];
-        if (randomnr > accuracy)
+        if (randomnr >= accuracy)
+        {
+            displaystrings.Add("false");
+            displaystrings.Add("Missed");
+            return displaystrings;
+        }
+        else{
+            displaystrings.Add("hit");
+        }
+        return displaystrings;
+    }
+
+}
+
+public class Special : Effect
+{
+    int power;
+    int accuracy;
+    Pokemontype Pokemontype;
+
+    // public Special(List<String> parameters)
+    // {
+    //     power = int.Parse(parameters[1]);
+    //     this.accuracy = int.Parse(parameters[2]);
+    //     this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
+    // }
+    public Special(int power, int accuracy, Pokemontype pokemontype){
+        this.power = power;
+        this.accuracy = accuracy;
+        this.Pokemontype = pokemontype;
+    }
+    public override List<string> Play(Team a, Team d, int dam)
+    {
+        List<string> displaystrings = new List<string>();
+        int randomnr = Random.Shared.Next(100);
+        Pokemonentity attacker;
+        attacker = a.pokemons[0];
+        Pokemonentity defender = d.pokemons[0];
+        if (randomnr >= accuracy)
         {
             displaystrings.Add("false");
             displaystrings.Add("Missed");
@@ -77,11 +134,16 @@ public class Physical : Effect
     int accuracy;
     Pokemontype Pokemontype;
 
-    public Physical(List<String> parameters)
-    {
-        power = int.Parse(parameters[1]);
-        this.accuracy = int.Parse(parameters[2]);
-        this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
+    // public Physical(List<String> parameters)
+    // {
+    //     power = int.Parse(parameters[1]);
+    //     this.accuracy = int.Parse(parameters[2]);
+    //     this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
+    // }
+    public Physical(int power,int accuracy,string pokemontypeid){
+        this.power = power;
+        this.accuracy = accuracy;
+        Pokemontype = Globaldata.Pokemontypes[pokemontypeid];
     }
     public override List<string> Play(Team a, Team d,int dam)
     {
@@ -90,7 +152,7 @@ public class Physical : Effect
         Pokemonentity attacker;
         attacker = a.pokemons[0];
         Pokemonentity defender = d.pokemons[0];
-        if (randomnr > accuracy)
+        if (randomnr >= accuracy)
         {
             displaystrings.Add("false");
             displaystrings.Add("Missed");
