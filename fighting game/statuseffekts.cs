@@ -29,6 +29,9 @@ public class Statuseffekt
                 case Movehinderer movehinderer:
                     Prey.movehinderer[id] = movehinderer;
                     break;
+                case Endofturn endofturn:
+                    Prey.endofturn[id] = endofturn;
+                    break;
 
 
 
@@ -37,6 +40,7 @@ public class Statuseffekt
             }
         }
     }
+    
 }
 public abstract class Statuscomponent
 {
@@ -46,6 +50,9 @@ public abstract class Statuscomponent
         if (attacker.staticeffekt.components.Contains(this))
         {
             id = attacker.staticeffekt.id;
+            if (id == "Paralysis"){
+                attacker.Paralysis = 1;
+            }
             attacker.staticeffekt = null;
         }
         else
@@ -74,6 +81,25 @@ public abstract class Statuscomponent
         }
     }
 }
+public abstract class Endofturn : Statuscomponent{
+    public abstract List<string> Execute(Team a);
+}
+public class Basicendofturn: Endofturn{
+    string name;
+    int dividedamadge;
+    public Basicendofturn(string name, int dividedamadge){
+        this.name = name;
+        this.dividedamadge = dividedamadge;
+    }
+    public override List<string> Execute(Team a){
+        List<string> displaystrings = new List<string>();
+        Pokemonentity attacker = a.pokemons[0];
+        int damadge = (int)(attacker.maxhp * (1f/dividedamadge));
+        attacker.hp -= damadge;
+        displaystrings.Add($"{attacker.basepokemon.name} took {damadge.ToString()} damadge of {name}");
+        return displaystrings;
+    }
+}
 public class Movehinderer : Statuscomponent
 {
     int oddsofstopping;
@@ -94,20 +120,20 @@ public class Movehinderer : Statuscomponent
     public List<string> Run(Pokemonentity attacker)
     {
         List<string> displaymessage = new List<string>();
-        displaymessage.Add(intromessage);
+        displaymessage.Add($"{attacker.basepokemon.name} {intromessage}");
         int randomnr = Random.Shared.Next(100);
-        if (randomnr > oddsofremoval)
+        if (randomnr < oddsofremoval)
         {
-            displaymessage.Add("hi");
+            
             displaymessage.Add(curemessage);
             remove(attacker);
             return displaymessage;
         }
         randomnr = Random.Shared.Next(100);
-        if (oddsofstopping < randomnr)
+        if (oddsofstopping > randomnr)
         {
-            displaymessage.Add("fail");
-            displaymessage.Add(failmessage);
+            displaymessage.Add("false");
+            displaymessage.Add($"{attacker.basepokemon.name} {failmessage}");
         }
         else
         {

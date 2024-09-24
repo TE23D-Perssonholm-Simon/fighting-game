@@ -32,9 +32,6 @@ public class Staticeffectgiver : Effect
     {
         List<string> displaystrings = new List<string>();
         int randomnr = Random.Shared.Next(101);
-        System.Console.WriteLine(randomnr);
-        System.Console.WriteLine(oddofcausing);
-        Console.ReadLine();
         if (oddofcausing >= randomnr)
         {
             if (d.pokemons[0].staticeffekt != null)
@@ -45,6 +42,9 @@ public class Staticeffectgiver : Effect
             {
                 displaystrings.Add($"{d.pokemons[0].basepokemon.name} {inflictmessage}");
                 d.pokemons[0].staticeffekt = statuseffekt.Clone();
+                if (d.pokemons[0].staticeffekt.id == "Paralysis"){
+                    d.pokemons[0].Paralysis = 0.5f;
+                }
                 d.pokemons[0].staticeffekt.Infect(d.pokemons[0]);
             }
 
@@ -89,11 +89,11 @@ public class Special : Effect
     //     this.accuracy = int.Parse(parameters[2]);
     //     this.Pokemontype = Globaldata.Pokemontypes[parameters[3]];
     // }
-    public Special(int power, int accuracy, Pokemontype pokemontype)
+    public Special(int power, int accuracy, String pokemontype)
     {
         this.power = power;
         this.accuracy = accuracy;
-        this.Pokemontype = pokemontype;
+        this.Pokemontype = Globaldata.Pokemontypes[pokemontype];
     }
     public override Damadgeeffectdata Play(Team a, Team d, int dam)
     {
@@ -135,7 +135,6 @@ public class Special : Effect
         }
         int damadge = (int)(((40 * crit + 2) * power * attacker.spattack / defender.spdef / 50 + 2) * stab * Pokemontypeadvantage);
         defender.hp -= damadge;
-        displaystrings.Add(damadge.ToString());
         if (defender.hp > 0)
         {
             displaystrings.Add($"{attacker.basepokemon.name} dealt {damadge.ToString()} to {defender.basepokemon.name} remaining hp {defender.hp.ToString()}");
@@ -206,13 +205,8 @@ public class Physical : Effect
         {
             displaystrings.Add("SUPER EFFECTIVE");
         }
-        float burn = 1;
-        if (attacker.staticeffekt.id == "burn")
-        {
-            burn = 0.5f;
-        }
-        int damadge = (int)(((40 * crit + 2) * power * attacker.attack / defender.def / 50 + 2) * stab * Pokemontypeadvantage * burn);
-        displaystrings.Add(damadge.ToString());
+        
+        int damadge = (int)(((40 * crit + 2) * power *attacker.burn* attacker.attack / defender.def / 50 + 2) * stab * Pokemontypeadvantage);
         defender.hp -= damadge;
         if (defender.hp > 0)
         {

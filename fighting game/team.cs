@@ -37,11 +37,12 @@ public class Team
 
     public bool makefaint()
     {
-        Console.Clear();
-        System.Console.WriteLine($"{playername}s turn press enter to continue");
-        Console.ReadLine();
+        
         if (pokemons.Count > 1)
         {
+            Console.Clear();
+            System.Console.WriteLine($"{playername}s turn press enter to continue");
+            Console.ReadLine();
             Switcheroo theswitch = makeswitch();
             pokemons.RemoveAt(0);
             theswitch.switchto -= 1;

@@ -43,8 +43,7 @@ void match(Team player1, Team player2)
         Console.Clear();
         if (teamorder[0].action.priority == teamorder[1].action.priority)
         {
-            
-            if (teamorder[1].pokemons[0].speed*teamorder[1].pokemons[0].Paralysis > teamorder[0].pokemons[0].speed*teamorder[1].pokemons[0].Paralysis)
+            if (teamorder[1].pokemons[0].speed*teamorder[1].pokemons[0].Paralysis > teamorder[0].pokemons[0].speed*teamorder[0].pokemons[0].Paralysis)
             {
                 teamorder = switcher(teamorder);
             }
@@ -53,21 +52,33 @@ void match(Team player1, Team player2)
         {
             teamorder = switcher(teamorder);
         }
-        try{
+        
         Globaldata.display(0,7,teamorder[0].play(teamorder[1]));
         Globaldata.display(0,0,player1.Display());
         Globaldata.display(Console.WindowWidth-10,0,player2.Display());
         Console.ReadLine();
-        }
-        catch(Exception e){
-            System.Console.WriteLine(e);
-            Console.ReadLine();
-        }
         Console.Clear();
         Globaldata.display(0,7,teamorder[1].play(teamorder[0]));
         Globaldata.display(0,0,player1.Display());
         Globaldata.display(Console.WindowWidth-10,0,player2.Display());
         Console.ReadLine();
+        foreach (Endofturn x in teamorder[0].pokemons[0].endofturn.Values){
+            
+            Console.Clear();
+            Globaldata.display(0,7,x.Execute(teamorder[0]));
+            Globaldata.display(0,0,player1.Display());
+            Globaldata.display(Console.WindowWidth-10,0,player2.Display());
+            Console.ReadLine();
+        }
+        foreach (Endofturn x in teamorder[1].pokemons[0].endofturn.Values){
+            Console.Clear();
+            Globaldata.display(0,7,x.Execute(teamorder[1]));
+            Globaldata.display(0,0,player1.Display());
+            Globaldata.display(Console.WindowWidth-10,0,player2.Display());
+            Console.ReadLine();
+        }
+        
+        
 
         foreach (Team x in Globaldata.faintorder)
         {

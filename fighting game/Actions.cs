@@ -33,13 +33,12 @@ public class Move : Action
         for (int i = 0; i<theeffects.Count && success; i++){
             effectmessage = theeffects[i].Run(attacker);
             if (effectmessage[1] == "false"){
-                
                 success = false;
             }
             effectmessage.RemoveAt(1);
             displaystrings.AddRange(effectmessage);
         }
-
+        if (success){
         displaystrings.Add($"{one.pokemons[0].basepokemon.name} used {name}");
         Damadgeeffectdata damadgeeffectmessage = damadgeeffect.Play(one, two,0);
         
@@ -55,12 +54,14 @@ public class Move : Action
         else {
             displaystrings.AddRange(damadgeeffectmessage.displaystrings);
         }
+        }
         if (defender.hp < 0){
             two.Faint(10);
         }
         if (attacker.hp < 0){
             one.Faint(9);
         }
+
         return displaystrings;
 
     }

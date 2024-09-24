@@ -142,11 +142,13 @@ public class Pokemonentity
     public Statuseffekt _staticeffekt = null;
     public Statuseffekt staticeffekt{
         set{
+            if (value != null){
             if (value.id == "Paralysis"){
                 Paralysis = 0.5f;
             }
             if (value.id == "Burn"){
                 burn = 0.5f;
+            }
             }
             _staticeffekt = value;
         }
@@ -158,7 +160,7 @@ public class Pokemonentity
     public Dictionary<string,Movehinderer> movehinderer = new Dictionary<string, Movehinderer>();
     public Dictionary<string,Statuscomponent> forced = new Dictionary<string, Statuscomponent>();
     public Dictionary<string,Statuscomponent> noswitch = new Dictionary<string, Statuscomponent>();
-    public Dictionary<string,Statuscomponent> endofturn = new Dictionary<string, Statuscomponent>();
+    public Dictionary<string,Endofturn> endofturn = new Dictionary<string, Endofturn>();
     public Dictionary<string,Statuscomponent> timer = new Dictionary<string, Statuscomponent>();
     public List<Move> moves = new List<Move>();
     public Pokemonentity(Pokemon basepokemon,List<string> strings)
