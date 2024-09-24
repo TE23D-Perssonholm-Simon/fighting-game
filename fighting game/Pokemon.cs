@@ -38,6 +38,7 @@ public class Pokemon
         foreach(string x in learnable_moves){
             learnablemoves.Add(Globaldata.movedict[x]);
         }
+        Globaldata.Pokedex[name] = this;
         
     }
 
@@ -46,6 +47,8 @@ public class Pokemonentity
 {
     public Pokemon basepokemon;
     public int hp, maxhp, def, attack, speed,spattack,spdef;
+
+    List<string> moveids;
 
     int _defbuff = 0;
 
@@ -144,10 +147,10 @@ public class Pokemonentity
     public Dictionary<string,Statuscomponent> endofturn = new Dictionary<string, Statuscomponent>();
     public Dictionary<string,Statuscomponent> timer = new Dictionary<string, Statuscomponent>();
     public List<Move> moves = new List<Move>();
-    public Pokemonentity(List<string> strings)
+    public Pokemonentity(Pokemon basepokemon,List<string> strings)
     {
         
-        basepokemon = Globaldata.Pokedex[strings[1]];
+        this.basepokemon = basepokemon;
         hp = basepokemon.hp;
         def = basepokemon.def;
         spdef = basepokemon.spdef;
@@ -158,9 +161,13 @@ public class Pokemonentity
         Pokemontype2 = basepokemon.Pokemontype2;
         maxhp = hp;
 
+        moves.Add(Globaldata.movedict[strings[0]]);
+        moves.Add(Globaldata.movedict[strings[1]]);
         moves.Add(Globaldata.movedict[strings[2]]);
         moves.Add(Globaldata.movedict[strings[3]]);
-        moves.Add(Globaldata.movedict[strings[4]]);
-        moves.Add(Globaldata.movedict[strings[5]]);
+        moveids = strings;
+    }
+    public Pokemonentity Clone(){
+        return new Pokemonentity(basepokemon,moveids);
     }
 }

@@ -10,6 +10,7 @@ public class Statuseffekt
         this.id = id;
         components = comp;
         this.inflictmessage = inflictmessage;
+        Globaldata.statuseffectddict[id] = this;
 
     }
 
@@ -45,6 +46,7 @@ public abstract class Statuscomponent
         if (attacker.staticeffekt.components.Contains(this))
         {
             id = attacker.staticeffekt.id;
+            attacker.staticeffekt = null;
         }
         else
         {
@@ -53,6 +55,7 @@ public abstract class Statuscomponent
                 if (x.components.Contains(this))
                 {
                     id = x.id;
+                    attacker.statuseffekts.Remove(x);
                 }
             }
         }
@@ -113,3 +116,5 @@ public class Movehinderer : Statuscomponent
         return displaymessage;
     }
 }
+
+

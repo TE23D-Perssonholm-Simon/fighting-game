@@ -15,13 +15,18 @@ public class Team
         }
         return (displaystrings);
     }
-    public Team(List<String> strings)
+    public Team(List<Pokemonentity> pokemonentities)
     {
-        foreach (string x in strings)
-        {
-            pokemons.Add(Globaldata.pokeid[x]);
-        }
+        pokemons = pokemonentities;
 
+    }
+
+    public Team Clone(){
+        List<Pokemonentity> pokemonentities = new List<Pokemonentity>();
+        foreach (Pokemonentity x in pokemons){
+            pokemonentities.Add(x.Clone());
+        }
+        return new Team(pokemonentities);
     }
 
     public void Faint(int priority)

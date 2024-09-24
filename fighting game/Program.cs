@@ -14,7 +14,7 @@ Globaldata.Loaddata("hi", Pokemontypechart);
 Initialize.loadcode();
 Console.Clear();
 
-match(Globaldata.teamcollection[0], Globaldata.teamcollection[1]);
+match(Globaldata.teamcollection[0].Clone(), Globaldata.teamcollection[0].Clone());
 
 List<Team> switcher(List<Team> teams)
 {
