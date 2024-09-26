@@ -9,7 +9,23 @@ public static class Globaldata
     public static Dictionary<string, Pokemonentity> pokeid = new Dictionary<string, Pokemonentity>();
     public static Dictionary<string, Move> movedict = new Dictionary<string, Move>();
     public static List<Team> teamcollection = new List<Team>();
-    public static List<Team> faintorder = new List<Team>();
+    public static List<Team> _faintorder = new List<Team>();
+    public static List<Team> faintorder{
+        get{
+            return _faintorder;
+        }
+        set{
+            bool newvalue = true;
+            foreach(Team x in _faintorder){
+                if(x == value[value.Count - 1]){
+                    newvalue = false;
+                }
+            }
+            if (newvalue){
+                _faintorder = value;
+            }
+        }
+    }
     public static Dictionary<string, Statuseffekt> statuseffectddict = new Dictionary<string, Statuseffekt>();
     public static Dictionary<string, Effect> effectdict = new Dictionary<string, Effect>();
     public static Dictionary<string, Type> effectclassdict = new Dictionary<string, Type>();

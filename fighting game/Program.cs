@@ -26,9 +26,9 @@ List<Team> switcher(List<Team> teams)
 void match(Team player1, Team player2)
 {
     System.Console.WriteLine("player 1 choose your name");
-    player1.playername = Console.ReadLine();
+    player1.name = Console.ReadLine();
     System.Console.WriteLine("player 2 choose your name");
-    player2.playername = Console.ReadLine();
+    player2.name = Console.ReadLine();
     List<Team> teamorder = new List<Team>();
     teamorder.Add(player1);
     teamorder.Add(player2);
@@ -38,8 +38,8 @@ void match(Team player1, Team player2)
     bool matchon = true;
     while (matchon)
     {
-        teamorder[0].Makemove(teamorder[1]);
-        teamorder[1].Makemove(teamorder[0]);
+        player1.Makemove(teamorder[1]);
+        player2.Makemove(teamorder[0]);
         Console.Clear();
         if (teamorder[0].action.priority == teamorder[1].action.priority)
         {
@@ -55,7 +55,7 @@ void match(Team player1, Team player2)
         
         Globaldata.display(0,7,teamorder[0].play(teamorder[1]));
         Globaldata.display(0,0,player1.Display());
-        Globaldata.display(Console.WindowWidth-10,0,player2.Display());
+        Globaldata.display(Console.WindowWidth-12,0,player2.Display());
         Console.ReadLine();
         Console.Clear();
         Globaldata.display(0,7,teamorder[1].play(teamorder[0]));
@@ -70,12 +70,18 @@ void match(Team player1, Team player2)
             Globaldata.display(Console.WindowWidth-10,0,player2.Display());
             Console.ReadLine();
         }
+        if (teamorder[0].pokemons[0].hp <= 0){
+            Globaldata.faintorder.Add(teamorder[0]);
+        }
         foreach (Endofturn x in teamorder[1].pokemons[0].endofturn.Values){
             Console.Clear();
             Globaldata.display(0,7,x.Execute(teamorder[1]));
             Globaldata.display(0,0,player1.Display());
             Globaldata.display(Console.WindowWidth-10,0,player2.Display());
             Console.ReadLine();
+        }
+        if (teamorder[1].pokemons[0].hp <= 0){
+            Globaldata.faintorder.Add(teamorder[1]);
         }
         
         
@@ -90,7 +96,7 @@ void match(Team player1, Team player2)
                     for (int i = 0; i < teamorder.Count; i++)
                     {
 
-                        if (teamorder[i].playername == x.playername)
+                        if (teamorder[i].name == x.name)
                         {
 
                             int g = 0;
@@ -98,8 +104,8 @@ void match(Team player1, Team player2)
                             {
                                 g = 1;
                             }
-                            System.Console.WriteLine($"{teamorder[g].playername} won!!!");
-                            System.Console.WriteLine($"{teamorder[i].playername} is a loser L");
+                            System.Console.WriteLine($"{teamorder[g].name} won!!!");
+                            System.Console.WriteLine($"{teamorder[i].name} is a loser L");
                             Console.ReadLine();
                             matchon = false;
                         }
@@ -114,7 +120,7 @@ void match(Team player1, Team player2)
         {
             foreach (Team x in Globaldata.faintorder)
             {
-                System.Console.WriteLine($"{x.playername} switched to {x.pokemons[0].basepokemon.name}");
+                System.Console.WriteLine($"{x.name} switched to {x.pokemons[0].basepokemon.name}");
             }
         }
 

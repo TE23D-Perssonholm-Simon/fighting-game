@@ -50,10 +50,16 @@ public static class Initialize
         components.Add(new Basicendofturn("burn", 16));
         Loadstatuseffekt("Burn", components, "got burned");
         components.Clear();
+        components.Add(new BadlyPoisoned());
+        Loadstatuseffekt("Badly Poisoned",components,"was badly poisoned");
+        components.Clear();
+        components.Add(new Basicendofturn("poison",8));
+        Loadstatuseffekt("Poison",components,"was poisoned");
 
         System.Console.WriteLine("Status effects loaded");
         Console.ReadLine();
-        try{
+
+        
         List<Effect> effects = new List<Effect>();
         effects.Add(new Staticeffectgiver(100, "Paralysis"));
         Loadmove("Thunder Wave", 0, new Statusmove(90), effects);
@@ -78,11 +84,20 @@ public static class Initialize
         effects.Clear();
         Loadmove("Bullet Punch",1,new Physical(40,100,"steel"),effects);
         Loadmove("X-Scissor",0,new Physical(80,100,"bug"),effects);
-        }
-        catch(Exception e){
-            System.Console.WriteLine(e);
-            Console.ReadLine();
-        }
+        Loadmove("Surf",0,new Special(90,100,"water"),effects);
+        Loadmove("Earthquake",0,new Physical(100,100,"ground"),effects);
+        effects.Clear();
+        effects.Add(new Staticeffectgiver(100,"Badly Poisoned"));
+        Loadmove("Toxic",0,new Statusmove(95),effects);
+        effects.Clear();
+        effects.Add(new Heal_effect(50));
+        Loadmove("Recover",0,new Statusmove(100),effects);
+        Loadmove("Roost",0,new Statusmove(100),effects);
+        Loadmove("Slack Off",0,new Statusmove(100),effects);
+        effects.Clear();
+        effects.Add(new Staticeffectgiver(30,"Poison"));
+        Loadmove("Sludge Bomb",0,new Special(90,100,"poison"),effects);
+        
 
         System.Console.WriteLine("Moves loaded");
         Console.ReadLine();
@@ -91,6 +106,7 @@ public static class Initialize
         moves.Add("Body Slam");
         moves.Add("Will-O-Wisp");
         moves.Add("Flamethrower");
+        moves.Add("Roost");
         loadpokemon("Charizard", 266, 155, 144, 200, 157, 184, "fire", "flying", moves);
         moves.Clear();
         moves.Add("Thunder Bolt");
@@ -105,14 +121,25 @@ public static class Initialize
         moves.Add("Bullet Punch");
         loadpokemon("Scizor",250,238,184,103,148,121,"bug","steel",moves);
         moves.Clear();
+        moves.Add("Toxic");
+        moves.Add("Surf");
+        moves.Add("Recover");
+        moves.Add("Sludge Bomb");
+        loadpokemon("Toxapex",210,117,278,99,260,67,"water","poison",moves);
+        moves.Clear();
+        moves.Add("Sludge Bomb");
+        moves.Add("Earthquake");
+        loadpokemon("Nidoking",272,188,143,157,139,157,"ground","poison",moves);
 
         System.Console.WriteLine("Pokemon loaded");
         Console.ReadLine();
         List<Pokemonentity> pokemonentities = new List<Pokemonentity>();
-        pokemonentities.Add(loadpokemonentity("Charizard","Flamethrower","Will-O-Wisp","Body Slam","Flamethrower"));
+        pokemonentities.Add(loadpokemonentity("Charizard","Flamethrower","Will-O-Wisp","Body Slam","Roost"));
         pokemonentities.Add(loadpokemonentity("Pikachu", "Thunder Bolt","Thunder Wave","Body Slam","Thunder Bolt"));
         pokemonentities.Add(loadpokemonentity("Scizor","Sword Dance","X-Scissor","U-Turn","Bullet Punch"));
-        Globaldata.teamcollection.Add(new Team(pokemonentities));
+        pokemonentities.Add(loadpokemonentity("Toxapex","Surf","Surf","Toxic","Recover"));
+        pokemonentities.Add(loadpokemonentity("Nidoking","Earthquake","Sludge Bomb","Sludge Bomb", "Sludge Bomb"));
+        Globaldata.teamcollection.Add(new Team("Test team",pokemonentities));
 
         System.Console.WriteLine("Teams loaded");
         Console.ReadLine();

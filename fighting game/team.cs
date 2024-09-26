@@ -1,7 +1,7 @@
 public class Team
 {
     public List<Pokemonentity> pokemons = new List<Pokemonentity>();
-    public string playername;
+    public string name;
 
 
 
@@ -15,7 +15,7 @@ public class Team
         }
         return (displaystrings);
     }
-    public Team(List<Pokemonentity> pokemonentities)
+    public Team(string teamname,List<Pokemonentity> pokemonentities)
     {
         pokemons = pokemonentities;
 
@@ -26,7 +26,7 @@ public class Team
         foreach (Pokemonentity x in pokemons){
             pokemonentities.Add(x.Clone());
         }
-        return new Team(pokemonentities);
+        return new Team(name,pokemonentities);
     }
 
     public void Faint(int priority)
@@ -41,7 +41,7 @@ public class Team
         if (pokemons.Count > 1)
         {
             Console.Clear();
-            System.Console.WriteLine($"{playername}s turn press enter to continue");
+            System.Console.WriteLine($"{name}s turn press enter to continue");
             Console.ReadLine();
             Switcheroo theswitch = makeswitch();
             pokemons.RemoveAt(0);
@@ -81,7 +81,7 @@ public class Team
     public List<string> Display()
     {
         List<string> left = new List<string>();
-        left.Add(playername);
+        left.Add(name);
         left.Add(pokemons[0].basepokemon.name);
         left.Add(pokemons[0].hp.ToString());
         left.Add(pokemons[0].Pokemontype1.name);
@@ -97,7 +97,7 @@ public class Team
     public void Makemove(Team opponent)
     {
         Console.Clear();
-        System.Console.WriteLine($"{playername}s turn press enter to continue");
+        System.Console.WriteLine($"{name}s turn press enter to continue");
         Console.ReadLine();
         Pokemonentity Leadpokemon = pokemons[0];
         while (true)

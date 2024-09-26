@@ -1,4 +1,3 @@
-public class TeamBuilder
-{
-    
+public static class TeamBuilder{
+
 }

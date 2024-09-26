@@ -100,6 +100,21 @@ public class Basicendofturn: Endofturn{
         return displaystrings;
     }
 }
+public class BadlyPoisoned:Endofturn{
+    int turn;
+    public BadlyPoisoned(){
+        turn = 0;
+    }
+    public override List<string> Execute(Team a){
+        List<string> displaystrings = new List<string>();
+        turn++;
+        int damadge = (int)(a.pokemons[0].maxhp * (1f/16f)*turn);
+        displaystrings.Add($"{a.pokemons[0]} took {damadge.ToString()} damadge due to poison");
+        a.pokemons[0].hp -= damadge;
+        return displaystrings;
+        
+    }
+}
 public class Movehinderer : Statuscomponent
 {
     int oddsofstopping;

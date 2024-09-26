@@ -296,3 +296,17 @@ public class Switch_effect:Effect{
         return new Damadgeeffectdata(true,0,displaystrings);
     }
 }
+
+public class Heal_effect:Effect{
+    public int healprocent;
+    public Heal_effect(int heal_procent){
+        healprocent = heal_procent;
+    }
+    public override Damadgeeffectdata Play(Team a, Team d, int damadge)
+    {
+        List<string> displaystrings = new List<string>();
+        a.pokemons[0].hp = Math.Min(a.pokemons[0].hp + a.pokemons[0].maxhp * healprocent /100,a.pokemons[0].maxhp);
+        displaystrings.Add($"{a.pokemons[0].basepokemon.name} healed to {a.pokemons[0].hp.ToString()}");
+        return new Damadgeeffectdata(true,0,displaystrings);
+    }
+}
