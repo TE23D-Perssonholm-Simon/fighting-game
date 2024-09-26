@@ -50,7 +50,7 @@ public class Pokemonentity
 
     List<string> moveids;
 
-    int _defbuff = 0;
+    public int _defbuff = 0;
 
     public float Paralysis = 1;
     public float burn = 1;
@@ -70,7 +70,7 @@ public class Pokemonentity
             def = (int)(def*defbuff);
         }
     }
-    int _attackbuff = 0;
+    public int _attackbuff = 0;
     public float attackbuff
     {
         get{
@@ -87,7 +87,7 @@ public class Pokemonentity
             attack = (int)(attack*attackbuff);
         }
     }
-    int _speedbuff = 0;
+    public int _speedbuff = 0;
     public float speedbuff
     {
         get{
@@ -104,7 +104,7 @@ public class Pokemonentity
             speed = (int)(speed*speedbuff);
         }
     }
-    int _spdefbuff = 0;
+    public int _spdefbuff = 0;
     public float spdefbuff
     {
         get{
@@ -121,7 +121,7 @@ public class Pokemonentity
             spdef = (int)(spdef*spdefbuff);
         }
     }
-    int _spattackbuff = 0;
+    public int _spattackbuff = 0;
     public float spattackbuff
     {
         get{

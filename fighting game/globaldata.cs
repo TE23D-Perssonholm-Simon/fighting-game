@@ -98,9 +98,9 @@ public static class Globaldata
         effectclassdict["Special"] = typeof(Special);
         effectclassdict["Physical"] = typeof(Physical);
         Globaldata.Pokemontypechartlines = new List<string>(File.ReadAllLines(Pokemontypechart));
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 17; i++)
         {
-            string name = Pokemontypechartlines[16 + i];
+            string name = Pokemontypechartlines[17 + i];
             Pokemontypes.Add(name, new Pokemontype(name, i));
         }
     //     g = 32;
@@ -195,6 +195,7 @@ public static class Globaldata
             }
             if (input == "enter")
             {
+                Console.Clear();
                 return (keys[cursor]);
             }
         }

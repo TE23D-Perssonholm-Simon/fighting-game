@@ -44,7 +44,6 @@ public static class Initialize
     public static void loadcode()
     {
         List<Statuscomponent> components = new List<Statuscomponent>();
-        //25
         components.Add(new Movehinderer(25, 0, "was paralyzed", "is paralyzed", ""));
         Loadstatuseffekt("Paralysis", components, "was paralysed");
         components.Clear();
@@ -54,7 +53,7 @@ public static class Initialize
 
         System.Console.WriteLine("Status effects loaded");
         Console.ReadLine();
-
+        try{
         List<Effect> effects = new List<Effect>();
         effects.Add(new Staticeffectgiver(100, "Paralysis"));
         Loadmove("Thunder Wave", 0, new Statusmove(90), effects);
@@ -70,6 +69,20 @@ public static class Initialize
         effects.Clear();
         effects.Add(new Staticeffectgiver(10,"Burn"));
         Loadmove("Flamethrower",0,new Special(90,100,"fire"),effects);
+        effects.Clear();
+        effects.Add(new Player_statchanger(2,0,0,0,0));
+        Loadmove("Sword Dance",0,new Statusmove(100),effects);
+        effects.Clear();
+        effects.Add(new Switch_effect("a"));
+        Loadmove("U-Turn",0,new Physical(70,100,"bug"),effects);
+        effects.Clear();
+        Loadmove("Bullet Punch",1,new Physical(40,100,"steel"),effects);
+        Loadmove("X-Scissor",0,new Physical(80,100,"bug"),effects);
+        }
+        catch(Exception e){
+            System.Console.WriteLine(e);
+            Console.ReadLine();
+        }
 
         System.Console.WriteLine("Moves loaded");
         Console.ReadLine();
@@ -86,13 +99,19 @@ public static class Initialize
         moves.Add("Thunder Bolt");
         loadpokemon("Pikachu", 230, 166, 103, 166, 148, 184, "electric", "empty type", moves);
         moves.Clear();
-
+        moves.Add("Sword Dance");
+        moves.Add("X-Scissor");
+        moves.Add("U-Turn");
+        moves.Add("Bullet Punch");
+        loadpokemon("Scizor",250,238,184,103,148,121,"bug","steel",moves);
+        moves.Clear();
 
         System.Console.WriteLine("Pokemon loaded");
         Console.ReadLine();
         List<Pokemonentity> pokemonentities = new List<Pokemonentity>();
         pokemonentities.Add(loadpokemonentity("Charizard","Flamethrower","Will-O-Wisp","Body Slam","Flamethrower"));
         pokemonentities.Add(loadpokemonentity("Pikachu", "Thunder Bolt","Thunder Wave","Body Slam","Thunder Bolt"));
+        pokemonentities.Add(loadpokemonentity("Scizor","Sword Dance","X-Scissor","U-Turn","Bullet Punch"));
         Globaldata.teamcollection.Add(new Team(pokemonentities));
 
         System.Console.WriteLine("Teams loaded");

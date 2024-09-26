@@ -221,3 +221,78 @@ public class Physical : Effect
     }
 
 }
+public class Opponent_statchanger: Effect{
+    int attack;
+    int special_attack;
+    int defence;
+    int special_defence;
+    int speed;
+    public Opponent_statchanger(int attack_changer,int special_attack_changer, int defence_changer,int special_defence_changer,int speed_changer){
+        attack = attack_changer;
+        special_attack = special_attack_changer;
+        defence = defence_changer;
+        special_defence = special_defence_changer;
+        speed = speed_changer;
+    }
+    public override Damadgeeffectdata Play(Team a,Team d, int damadge){
+        List<string> displaystring = new List<string>();
+        Pokemonentity ptc = d.pokemons[0];
+        ptc.attackbuff = attack;
+        ptc.spattackbuff = special_attack;
+        ptc.spdefbuff = special_defence;
+        ptc.defbuff = defence;
+        ptc.speedbuff = speed;
+        displaystring.Add($"{ptc.basepokemon.name} got their stats changed");
+        
+        return new Damadgeeffectdata(true,0,displaystring);
+
+    }
+
+}
+public class Player_statchanger: Effect{
+    int attack;
+    int special_attack;
+    int defence;
+    int special_defence;
+    int speed;
+    public Player_statchanger(int attack_changer,int special_attack_changer, int defence_changer,int special_defence_changer,int speed_changer){
+        attack = attack_changer;
+        special_attack = special_attack_changer;
+        defence = defence_changer;
+        special_defence = special_defence_changer;
+        speed = speed_changer;
+    }
+    public override Damadgeeffectdata Play(Team a,Team d, int damadge){
+        List<string> displaystring = new List<string>();
+        Pokemonentity ptc = a.pokemons[0];
+        ptc.attackbuff = attack;
+        ptc.spattackbuff = special_attack;
+        ptc.spdefbuff = special_defence;
+        ptc.defbuff = defence;
+        ptc.speedbuff = speed;
+        displaystring.Add($"{ptc.basepokemon.name} got their stats changed");
+        
+        return new Damadgeeffectdata(true,0,displaystring);
+
+    }
+
+}
+public class Switch_effect:Effect{
+    String sw;
+    public Switch_effect(string a_or_d){
+        sw = a_or_d;
+    }
+    public override Damadgeeffectdata Play(Team a, Team d, int damadge)
+    {
+        List<string> displaystrings = new List<string>();
+        Team toswitch;
+        if (sw == "a"){
+            toswitch = a;
+        }
+        else{
+            toswitch = d;
+        }
+        displaystrings.AddRange(toswitch.makeswitch().execute(a,d));
+        return new Damadgeeffectdata(true,0,displaystrings);
+    }
+}
