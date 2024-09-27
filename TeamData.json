@@ -1,0 +1,27 @@
+{
+    "list": [
+        {
+            "name": "Filetest",
+            "team": [
+                {
+                    "basepokemonid": "Toxapex",
+                    "moves" :[
+                        "Toxic",
+                        "Surf",
+                        "Sludge Bomb",
+                        "Recover"
+                    ]
+                },
+                {
+                    "basepokemonid": "Charizard",
+                    "moves":[
+                        "Flamethrower",
+                        "Roost",
+                        "Will-O-Wisp",
+                        "Roost"
+                    ]
+                }
+            ]
+        }
+    ]
+}

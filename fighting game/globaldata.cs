@@ -97,7 +97,7 @@ public static class Globaldata
         }
     }
 
-    public static void Loaddata(string pokemons, string Pokemontypechart)
+    public static void Loaddata(string Pokemontypechart)
     {
         //int g = 0;
         effectclassdict["Special"] = typeof(Special);

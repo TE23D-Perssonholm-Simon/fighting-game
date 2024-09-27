@@ -186,4 +186,7 @@ public class Pokemonentity
     public Pokemonentity Clone(){
         return new Pokemonentity(basepokemon,moveids);
     }
+    public Pokemonentity_initialize_data serielize(){
+        return new Pokemonentity_initialize_data(basepokemon.name,moveids);
+    }
 }

@@ -10,8 +10,10 @@ using Microsoft.VisualBasic;
 try{
 string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 string Pokemontypechart = Path.Combine(projectDirectory, "pokemontypechart.txt");
-Globaldata.Loaddata("hi", Pokemontypechart);
+string teamdata = Path.Combine(projectDirectory, "TeamData.json");
+Globaldata.Loaddata(Pokemontypechart);
 Initialize.loadcode();
+FileManager.load(teamdata);
 Console.Clear();
 List<string> options = new List<string>();
 options.Add("Team Editor");
@@ -25,6 +27,9 @@ while(true){
     }
     if (svar == "Start Game"){
         match();
+    }
+    if (svar == "Save"){
+        FileManager.write();
     }
 }
 
@@ -47,10 +52,10 @@ void match()
     foreach (Team x in Globaldata.teamcollection){
         options[x.name] = x;
     }
-    Team player1 = options[Globaldata.Ask("Player 1 choose your team",options.Keys.ToList())].Clone();
-    Team player2 = options[Globaldata.Ask("Player 2 choose your team",options.Keys.ToList())].Clone();
+    Team player1 = options[Globaldata.Ask($"player1 choose your team",options.Keys.ToList())].Clone();
     System.Console.WriteLine("player 1 choose your name");
     player1.name = Console.ReadLine();
+    Team player2 = options[Globaldata.Ask("Player 2 choose your team",options.Keys.ToList())].Clone();
     System.Console.WriteLine("player 2 choose your name");
     player2.name = Console.ReadLine();
     List<Team> teamorder = new List<Team>();

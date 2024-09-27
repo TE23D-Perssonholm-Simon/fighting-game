@@ -269,6 +269,13 @@ public class Team
 
         }
     }
+    public team_initializer serielize(){
+        List<Pokemonentity_initialize_data> team = new List<Pokemonentity_initialize_data>();
+        foreach(Pokemonentity x in pokemons){
+            team.Add(x.serielize());
+        }
+        return new team_initializer(name,team);
+    }
 
 
 }
