@@ -7,14 +7,32 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 
 //fixa namn väljaren
-
+try{
 string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
 string Pokemontypechart = Path.Combine(projectDirectory, "pokemontypechart.txt");
 Globaldata.Loaddata("hi", Pokemontypechart);
 Initialize.loadcode();
 Console.Clear();
+List<string> options = new List<string>();
+options.Add("Team Editor");
+options.Add("Start Game");
+options.Add("Save");
+string svar;
+while(true){
+    svar = Globaldata.Ask("Simons fantastiska Pokemon Spel", options);
+    if (svar == "Team Editor"){
+        TeamBuilder.team_editor();
+    }
+    if (svar == "Start Game"){
+        match();
+    }
+}
 
-match(Globaldata.teamcollection[0].Clone(), Globaldata.teamcollection[0].Clone());
+}
+catch(Exception e){
+    System.Console.WriteLine(e);
+    Console.ReadLine();
+}
 
 List<Team> switcher(List<Team> teams)
 {
@@ -23,8 +41,14 @@ List<Team> switcher(List<Team> teams)
     teams[1] = leadteam;
     return teams;
 }
-void match(Team player1, Team player2)
+void match()
 {
+    Dictionary<string,Team> options = new Dictionary<string, Team>();
+    foreach (Team x in Globaldata.teamcollection){
+        options[x.name] = x;
+    }
+    Team player1 = options[Globaldata.Ask("Player 1 choose your team",options.Keys.ToList())].Clone();
+    Team player2 = options[Globaldata.Ask("Player 2 choose your team",options.Keys.ToList())].Clone();
     System.Console.WriteLine("player 1 choose your name");
     player1.name = Console.ReadLine();
     System.Console.WriteLine("player 2 choose your name");
@@ -71,7 +95,7 @@ void match(Team player1, Team player2)
             Console.ReadLine();
         }
         if (teamorder[0].pokemons[0].hp <= 0){
-            Globaldata.faintorder.Add(teamorder[0]);
+            Globaldata.faintorderadd(teamorder[0]);
         }
         foreach (Endofturn x in teamorder[1].pokemons[0].endofturn.Values){
             Console.Clear();
@@ -81,7 +105,7 @@ void match(Team player1, Team player2)
             Console.ReadLine();
         }
         if (teamorder[1].pokemons[0].hp <= 0){
-            Globaldata.faintorder.Add(teamorder[1]);
+            Globaldata.faintorderadd(teamorder[1]);
         }
         
         

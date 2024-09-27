@@ -51,7 +51,7 @@ public static class Initialize
         Loadstatuseffekt("Burn", components, "got burned");
         components.Clear();
         components.Add(new BadlyPoisoned());
-        Loadstatuseffekt("Badly Poisoned",components,"was badly poisoned");
+        Loadstatuseffekt("B Poisoned",components,"was badly poisoned");
         components.Clear();
         components.Add(new Basicendofturn("poison",8));
         Loadstatuseffekt("Poison",components,"was poisoned");
@@ -87,7 +87,7 @@ public static class Initialize
         Loadmove("Surf",0,new Special(90,100,"water"),effects);
         Loadmove("Earthquake",0,new Physical(100,100,"ground"),effects);
         effects.Clear();
-        effects.Add(new Staticeffectgiver(100,"Badly Poisoned"));
+        effects.Add(new Staticeffectgiver(100,"B Poisoned"));
         Loadmove("Toxic",0,new Statusmove(95),effects);
         effects.Clear();
         effects.Add(new Heal_effect(50));
