@@ -94,6 +94,16 @@ public class Team
         }
         return left;
     }
+    public string previewdisplay(){
+        List<string> display = new List<string>();
+        display.Add($"{name}:");
+        foreach(Pokemonentity x in pokemons){
+            display.Add(x.basepokemon.name);
+        }
+        return string.Join(" ",display);
+
+
+    }
     public void Makemove(Team opponent)
     {
         Console.Clear();
@@ -154,5 +164,8 @@ public class Team
             }
         }
 
+    }
+    public void edit(){
+        
     }
 }
