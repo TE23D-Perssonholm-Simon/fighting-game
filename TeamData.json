@@ -1,27 +1,77 @@
 {
-    "list": [
+  "list": [
+    {
+      "name": "Test team",
+      "team": [
         {
-            "name": "Filetest",
-            "team": [
-                {
-                    "basepokemonid": "Toxapex",
-                    "moves" :[
-                        "Toxic",
-                        "Surf",
-                        "Sludge Bomb",
-                        "Recover"
-                    ]
-                },
-                {
-                    "basepokemonid": "Charizard",
-                    "moves":[
-                        "Flamethrower",
-                        "Roost",
-                        "Will-O-Wisp",
-                        "Roost"
-                    ]
-                }
-            ]
+          "basepokemonid": "Charizard",
+          "moves": [
+            "Flamethrower",
+            "Will-O-Wisp",
+            "Body Slam",
+            "Roost"
+          ]
+        },
+        {
+          "basepokemonid": "Pikachu",
+          "moves": [
+            "Thunder Bolt",
+            "Thunder Wave",
+            "Body Slam",
+            "Thunder Bolt"
+          ]
+        },
+        {
+          "basepokemonid": "Scizor",
+          "moves": [
+            "Sword Dance",
+            "X-Scissor",
+            "U-Turn",
+            "Bullet Punch"
+          ]
+        },
+        {
+          "basepokemonid": "Toxapex",
+          "moves": [
+            "Surf",
+            "Surf",
+            "Toxic",
+            "Recover"
+          ]
+        },
+        {
+          "basepokemonid": "Nidoking",
+          "moves": [
+            "Earthquake",
+            "Sludge Bomb",
+            "Sludge Bomb",
+            "Sludge Bomb"
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "name": "Filetest",
+      "team": [
+        {
+          "basepokemonid": "Toxapex",
+          "moves": [
+            "Toxic",
+            "Surf",
+            "Sludge Bomb",
+            "Recover"
+          ]
+        },
+        {
+          "basepokemonid": "Charizard",
+          "moves": [
+            "Flamethrower",
+            "Roost",
+            "Will-O-Wisp",
+            "Roost"
+          ]
+        }
+      ]
+    }
+  ]
 }

@@ -6,9 +6,17 @@ public static class TeamBuilder
         {
             Dictionary<string, Team> keys = new Dictionary<string, Team>();
             List<Team> teams = Globaldata.teamcollection;
+            string teamkey;
             for (int i = 0; i < teams.Count && i < 50; i++)
             {
-                keys.Add(teams[i].previewdisplay(), teams[i]);
+                teamkey = teams[i].previewdisplay();
+                
+                if(!keys.ContainsKey(teamkey)){
+                    keys.Add(teamkey, teams[i]);
+                }
+                else{
+                    teams[i].name = $"{teams[i].name} 2";
+                }
             }
             keys.Add("Create New",null);
             keys.Add("Exit", teams[0]);

@@ -187,6 +187,9 @@ public class Pokemonentity
         return new Pokemonentity(basepokemon,moveids);
     }
     public Pokemonentity_initialize_data serielize(){
-        return new Pokemonentity_initialize_data(basepokemon.name,moveids);
+        Pokemonentity_initialize_data pokemon = new Pokemonentity_initialize_data();
+        pokemon.basepokemonid = basepokemon.name;
+        pokemon.moves = moveids;
+        return pokemon;
     }
 }

@@ -19,7 +19,8 @@ public static class FileManager{
         foreach(Team x in Globaldata.teamcollection){
             team_Initializers.Add(x.serielize());
         }
-        Jsonclass data = new Jsonclass(team_Initializers);
+        Jsonclass data = new Jsonclass();
+        data.list = team_Initializers;
         string Jsonstring = JsonSerializer.Serialize(data,new JsonSerializerOptions{WriteIndented = true});
         File.WriteAllText(FileManager.filepath,Jsonstring);
     }
@@ -30,10 +31,6 @@ public class Pokemonentity_initialize_data{
     public Pokemonentity Initialize(){
         return new Pokemonentity(Globaldata.Pokedex[basepokemonid],moves);
 
-    }
-    public Pokemonentity_initialize_data(string basepokemonid,List<string> moves){
-        this.basepokemonid = basepokemonid;
-        this.moves = moves;
     }
     
 }
@@ -47,15 +44,8 @@ public class team_initializer{
         }
         return new Team(name,pokemons);
     }
-    public team_initializer(string name,List<Pokemonentity_initialize_data> pokemons){
-        this.name = name;
-        team = pokemons;
-    }
 }
 
 public class Jsonclass{
     public List<team_initializer> list {get; set;}
-    public Jsonclass(List<team_initializer> teams){
-        list = teams;
-    }
 }

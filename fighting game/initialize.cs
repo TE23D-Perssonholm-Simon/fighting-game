@@ -134,12 +134,12 @@ public static class Initialize
         System.Console.WriteLine("Pokemon loaded");
         Console.ReadLine();
         List<Pokemonentity> pokemonentities = new List<Pokemonentity>();
-        pokemonentities.Add(loadpokemonentity("Charizard","Flamethrower","Will-O-Wisp","Body Slam","Roost"));
-        pokemonentities.Add(loadpokemonentity("Pikachu", "Thunder Bolt","Thunder Wave","Body Slam","Thunder Bolt"));
-        pokemonentities.Add(loadpokemonentity("Scizor","Sword Dance","X-Scissor","U-Turn","Bullet Punch"));
-        pokemonentities.Add(loadpokemonentity("Toxapex","Surf","Surf","Toxic","Recover"));
-        pokemonentities.Add(loadpokemonentity("Nidoking","Earthquake","Sludge Bomb","Sludge Bomb", "Sludge Bomb"));
-        Globaldata.teamcollection.Add(new Team("Test team",pokemonentities));
+        // pokemonentities.Add(loadpokemonentity("Charizard","Flamethrower","Will-O-Wisp","Body Slam","Roost"));
+        // pokemonentities.Add(loadpokemonentity("Pikachu", "Thunder Bolt","Thunder Wave","Body Slam","Thunder Bolt"));
+        // pokemonentities.Add(loadpokemonentity("Scizor","Sword Dance","X-Scissor","U-Turn","Bullet Punch"));
+        // pokemonentities.Add(loadpokemonentity("Toxapex","Surf","Surf","Toxic","Recover"));
+        // pokemonentities.Add(loadpokemonentity("Nidoking","Earthquake","Sludge Bomb","Sludge Bomb", "Sludge Bomb"));
+        // Globaldata.teamcollection.Add(new Team("Test team",pokemonentities));
 
         System.Console.WriteLine("Teams loaded");
         Console.ReadLine();

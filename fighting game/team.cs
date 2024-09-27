@@ -274,7 +274,10 @@ public class Team
         foreach(Pokemonentity x in pokemons){
             team.Add(x.serielize());
         }
-        return new team_initializer(name,team);
+        team_initializer team_ = new team_initializer();
+        team_.name = name;
+        team_.team = team;
+        return team_;
     }
 
 
