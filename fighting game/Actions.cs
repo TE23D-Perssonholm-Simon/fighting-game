@@ -1,7 +1,7 @@
 public class Move : Action
 {
     public string name;
-    new public int priority;
+    public override int priority {get; set;}
     List<Effect> effects = new List<Effect>();
     Effect damadgeeffect;
     //public Move(List<string> strings)

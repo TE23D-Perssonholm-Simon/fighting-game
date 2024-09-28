@@ -141,6 +141,7 @@ public class Movehinderer : Statuscomponent
         {
             
             displaymessage.Add(curemessage);
+            displaymessage.Add("hi");
             remove(attacker);
             return displaymessage;
         }

@@ -55,6 +55,10 @@ public static class Initialize
         components.Clear();
         components.Add(new Basicendofturn("poison",8));
         Loadstatuseffekt("Poison",components,"was poisoned");
+        components.Clear();
+        components.Add(new Movehinderer(100,20,"was frozen in place","is frozen","thawed"));
+        Loadstatuseffekt("Freeze",components,"froze");
+        components.Clear();
 
         System.Console.WriteLine("Status effects loaded");
         Console.ReadLine();
@@ -76,7 +80,7 @@ public static class Initialize
         effects.Add(new Staticeffectgiver(10,"Burn"));
         Loadmove("Flamethrower",0,new Special(90,100,"fire"),effects);
         effects.Clear();
-        effects.Add(new Player_statchanger(2,0,0,0,0));
+        effects.Add(new Player_statchanger(100,2,0,0,0,0));
         Loadmove("Sword Dance",0,new Statusmove(100),effects);
         effects.Clear();
         effects.Add(new Switch_effect("a"));
@@ -97,7 +101,23 @@ public static class Initialize
         effects.Clear();
         effects.Add(new Staticeffectgiver(30,"Poison"));
         Loadmove("Sludge Bomb",0,new Special(90,100,"poison"),effects);
-        
+        effects.Clear();
+        effects.Add(new Healthsteal(50));
+        Loadmove("Giga Drain",0,new Special(75,100,"grass"),effects);
+        Loadmove("Drain Punch",0,new Physical(75,100,"fighting"),effects);
+        effects.Clear();
+        effects.Add(new Staticeffectgiver(10,"Freeze"));
+        Loadmove("Ice Beam",0,new Special(90,100,"ice"),effects);
+        effects.Clear();
+        effects.Add(new Player_statchanger(100,0,2,0,0,0));
+        Loadmove("Nasty Plot",0,new Statusmove(100),effects);
+        effects.Clear();
+        effects.Add(new Opponent_statchanger(20,0,0,0,-2,0));
+        Loadmove("Shadow Ball",0,new Special(80,100,"ghost"),effects);
+        effects.Clear();
+        effects.Add(new Opponent_statchanger(10,0,0,0,-1,0));
+        Loadmove("Energy Ball",0,new Special(90,100,"grass"),effects);
+        effects.Clear();
 
         System.Console.WriteLine("Moves loaded");
         Console.ReadLine();
@@ -112,7 +132,6 @@ public static class Initialize
         moves.Add("Thunder Bolt");
         moves.Add("Thunder Wave");
         moves.Add("Body Slam");
-        moves.Add("Thunder Bolt");
         loadpokemon("Pikachu", 230, 166, 103, 166, 148, 184, "electric", "empty type", moves);
         moves.Clear();
         moves.Add("Sword Dance");
@@ -130,6 +149,31 @@ public static class Initialize
         moves.Add("Sludge Bomb");
         moves.Add("Earthquake");
         loadpokemon("Nidoking",272,188,143,157,139,157,"ground","poison",moves);
+        moves.Clear();
+        moves.Add("Giga Drain");
+        moves.Add("Sludge Bomb");
+        moves.Add("Toxic");
+        loadpokemon("Venasour",270,152,153,184,184,148,"grass","poison",moves);
+        moves.Clear();
+        moves.Add("Surf");
+        moves.Add("Ice Beam");
+        loadpokemon("Blastoise",268,153,184,157,193,144,"water","empty type",moves);
+        moves.Clear();
+        moves.Add("Flamethrower");
+        moves.Add("Nasty Plot");
+        moves.Add("Energy Ball");
+        moves.Add("Shadow Ball");
+        loadpokemon("Ninetales",256,141,139,150,184,184,"fire","empty type",moves);
+        moves.Clear();
+        moves.Add("Shadow Ball");
+        moves.Add("Sludge Bomb");
+        moves.Add("Nasty Plot");
+        moves.Add("Thunderbolt");
+        moves.Add("Giga Drain");
+        moves.Add("Energy Ball");
+        //darkpulse
+        loadpokemon("Gengar",230,251,240,394,273,350,"ghost","poison",moves);
+        
 
         System.Console.WriteLine("Pokemon loaded");
         Console.ReadLine();

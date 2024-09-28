@@ -50,7 +50,7 @@ void match()
 {
     Dictionary<string,Team> options = new Dictionary<string, Team>();
     foreach (Team x in Globaldata.teamcollection){
-        options[x.name] = x;
+        options[x.previewdisplay()] = x;
     }
     Team player1 = options[Globaldata.Ask($"player1 choose your team",options.Keys.ToList())].Clone();
     System.Console.WriteLine("player 1 choose your name");
@@ -70,6 +70,9 @@ void match()
         player1.Makemove(teamorder[1]);
         player2.Makemove(teamorder[0]);
         Console.Clear();
+        System.Console.WriteLine(teamorder[0].action.priority);
+        System.Console.WriteLine(teamorder[1].action.priority);
+        Console.ReadLine();
         if (teamorder[0].action.priority == teamorder[1].action.priority)
         {
             if (teamorder[1].pokemons[0].speed*teamorder[1].pokemons[0].Paralysis > teamorder[0].pokemons[0].speed*teamorder[0].pokemons[0].Paralysis)

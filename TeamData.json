@@ -70,6 +70,74 @@
             "Will-O-Wisp",
             "Roost"
           ]
+        },
+        {
+          "basepokemonid": "Ninetales",
+          "moves": [
+            "Flamethrower",
+            "Nasty Plot",
+            "Energy Ball",
+            "Shadow Ball"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hallo",
+      "team": [
+        {
+          "basepokemonid": "Blastoise",
+          "moves": [
+            "Surf",
+            "Ice Beam",
+            "Surf",
+            "Ice Beam"
+          ]
+        },
+        {
+          "basepokemonid": "Venasour",
+          "moves": [
+            "Giga Drain",
+            "Sludge Bomb",
+            "Giga Drain",
+            "Sludge Bomb"
+          ]
+        },
+        {
+          "basepokemonid": "Charizard",
+          "moves": [
+            "Body Slam",
+            "Will-O-Wisp",
+            "Flamethrower",
+            "Roost"
+          ]
+        },
+        {
+          "basepokemonid": "Scizor",
+          "moves": [
+            "Sword Dance",
+            "X-Scissor",
+            "U-Turn",
+            "Bullet Punch"
+          ]
+        },
+        {
+          "basepokemonid": "Pikachu",
+          "moves": [
+            "Thunder Bolt",
+            "Thunder Wave",
+            "Body Slam",
+            "Thunder Bolt"
+          ]
+        },
+        {
+          "basepokemonid": "Nidoking",
+          "moves": [
+            "Sludge Bomb",
+            "Earthquake",
+            "Sludge Bomb",
+            "Earthquake"
+          ]
         }
       ]
     }
