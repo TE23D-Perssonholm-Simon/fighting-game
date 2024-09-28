@@ -44,7 +44,7 @@ public static class Initialize
     public static void loadcode()
     {
         List<Statuscomponent> components = new List<Statuscomponent>();
-        components.Add(new Movehinderer(25, 0, "was paralyzed", "is paralyzed", ""));
+        components.Add(new Basic_Movehinderer(25, 0, "was paralyzed", "is paralyzed", ""));
         Loadstatuseffekt("Paralysis", components, "was paralysed");
         components.Clear();
         components.Add(new Basicendofturn("burn", 16));
@@ -56,28 +56,31 @@ public static class Initialize
         components.Add(new Basicendofturn("poison",8));
         Loadstatuseffekt("Poison",components,"was poisoned");
         components.Clear();
-        components.Add(new Movehinderer(100,20,"was frozen in place","is frozen","thawed"));
+        components.Add(new Basic_Movehinderer(100,20,"was frozen in place","is frozen","thawed"));
         Loadstatuseffekt("Freeze",components,"froze");
         components.Clear();
+        components.Add(new Timedremoval("","flinched"));
+        components.Add(new Counter(1));
+        Loadstatuseffekt("Flinch",components,"");
 
         System.Console.WriteLine("Status effects loaded");
         Console.ReadLine();
 
         
         List<Effect> effects = new List<Effect>();
-        effects.Add(new Staticeffectgiver(100, "Paralysis"));
+        effects.Add(new Staticeffectgiver(100, "Paralysis",true));
         Loadmove("Thunder Wave", 0, new Statusmove(90), effects);
         effects.Clear();
-        effects.Add(new Staticeffectgiver(10, "Paralysis"));
+        effects.Add(new Staticeffectgiver(10, "Paralysis",true));
         Loadmove("Thunder Bolt", 0, new Special(90, 100, "electric"), effects);
         effects.Clear();
-        effects.Add(new Staticeffectgiver(30, "Paralysis"));
+        effects.Add(new Staticeffectgiver(30, "Paralysis",true));
         Loadmove("Body Slam", 0, new Physical(85, 100, "normal"), effects);
         effects.Clear();
-        effects.Add(new Staticeffectgiver(100, "Burn"));
+        effects.Add(new Staticeffectgiver(100, "Burn",true));
         Loadmove("Will-O-Wisp",0,new Statusmove(85),effects);
         effects.Clear();
-        effects.Add(new Staticeffectgiver(10,"Burn"));
+        effects.Add(new Staticeffectgiver(10,"Burn",true));
         Loadmove("Flamethrower",0,new Special(90,100,"fire"),effects);
         effects.Clear();
         effects.Add(new Player_statchanger(100,2,0,0,0,0));
@@ -91,7 +94,7 @@ public static class Initialize
         Loadmove("Surf",0,new Special(90,100,"water"),effects);
         Loadmove("Earthquake",0,new Physical(100,100,"ground"),effects);
         effects.Clear();
-        effects.Add(new Staticeffectgiver(100,"B Poisoned"));
+        effects.Add(new Staticeffectgiver(100,"B Poisoned",true));
         Loadmove("Toxic",0,new Statusmove(95),effects);
         effects.Clear();
         effects.Add(new Heal_effect(50));
@@ -99,14 +102,15 @@ public static class Initialize
         Loadmove("Roost",0,new Statusmove(100),effects);
         Loadmove("Slack Off",0,new Statusmove(100),effects);
         effects.Clear();
-        effects.Add(new Staticeffectgiver(30,"Poison"));
+        effects.Add(new Staticeffectgiver(30,"Poison",true));
         Loadmove("Sludge Bomb",0,new Special(90,100,"poison"),effects);
         effects.Clear();
         effects.Add(new Healthsteal(50));
         Loadmove("Giga Drain",0,new Special(75,100,"grass"),effects);
         Loadmove("Drain Punch",0,new Physical(75,100,"fighting"),effects);
         effects.Clear();
-        effects.Add(new Staticeffectgiver(10,"Freeze"));
+        //10
+        effects.Add(new Staticeffectgiver(100,"Freeze",true));
         Loadmove("Ice Beam",0,new Special(90,100,"ice"),effects);
         effects.Clear();
         effects.Add(new Player_statchanger(100,0,2,0,0,0));
@@ -118,6 +122,11 @@ public static class Initialize
         effects.Add(new Opponent_statchanger(10,0,0,0,-1,0));
         Loadmove("Energy Ball",0,new Special(90,100,"grass"),effects);
         effects.Clear();
+        //30
+        effects.Add(new Staticeffectgiver(100,"Flinch",false));
+        Loadmove("Air Slash",0,new Special(75,95,"flying"),effects);
+        effects.Clear();
+        
 
         System.Console.WriteLine("Moves loaded");
         Console.ReadLine();
@@ -127,6 +136,7 @@ public static class Initialize
         moves.Add("Will-O-Wisp");
         moves.Add("Flamethrower");
         moves.Add("Roost");
+        moves.Add("Air Slash");
         loadpokemon("Charizard", 266, 155, 144, 200, 157, 184, "fire", "flying", moves);
         moves.Clear();
         moves.Add("Thunder Bolt");
@@ -168,7 +178,7 @@ public static class Initialize
         moves.Add("Shadow Ball");
         moves.Add("Sludge Bomb");
         moves.Add("Nasty Plot");
-        moves.Add("Thunderbolt");
+        moves.Add("Thunder Bolt");
         moves.Add("Giga Drain");
         moves.Add("Energy Ball");
         //darkpulse

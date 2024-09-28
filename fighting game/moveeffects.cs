@@ -21,11 +21,13 @@ public class Staticeffectgiver : Effect
     Statuseffekt statuseffekt;
     int oddofcausing;
     string inflictmessage;
-    public Staticeffectgiver(int odds, string effectid)
+    bool isstatic;
+    public Staticeffectgiver(int odds, string effectid, bool isstatic)
     {
         oddofcausing = odds;
         statuseffekt = Globaldata.statuseffectddict[effectid];
         this.inflictmessage = statuseffekt.inflictmessage;
+        this.isstatic = isstatic;
     }
 
     public override Damadgeeffectdata Play(Team a, Team d, int dmg)
@@ -34,6 +36,7 @@ public class Staticeffectgiver : Effect
         int randomnr = Random.Shared.Next(101);
         if (oddofcausing >= randomnr)
         {
+            if (isstatic){
             if (d.pokemons[0].staticeffekt != null)
             {
                 displaystrings.Add($"{d.pokemons[0].basepokemon.name} already has a status condition");
@@ -47,6 +50,11 @@ public class Staticeffectgiver : Effect
                     d.pokemons[0].Paralysis = 0.5f;
                 }
                 d.pokemons[0].staticeffekt.Infect(d.pokemons[0]);
+            }
+            }
+            else{
+                d.pokemons[0].statuseffekts.Add(statuseffekt);
+                statuseffekt.Infect(d.pokemons[0]);
             }
 
         }

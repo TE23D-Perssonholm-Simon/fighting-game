@@ -63,21 +63,39 @@
           ]
         },
         {
-          "basepokemonid": "Charizard",
-          "moves": [
-            "Flamethrower",
-            "Roost",
-            "Will-O-Wisp",
-            "Roost"
-          ]
-        },
-        {
           "basepokemonid": "Ninetales",
           "moves": [
             "Flamethrower",
             "Nasty Plot",
             "Energy Ball",
             "Shadow Ball"
+          ]
+        },
+        {
+          "basepokemonid": "Charizard",
+          "moves": [
+            "Air Slash",
+            "Body Slam",
+            "Flamethrower",
+            "Roost"
+          ]
+        },
+        {
+          "basepokemonid": "Blastoise",
+          "moves": [
+            "Surf",
+            "Ice Beam",
+            "Surf",
+            "Ice Beam"
+          ]
+        },
+        {
+          "basepokemonid": "Gengar",
+          "moves": [
+            "Nasty Plot",
+            "Shadow Ball",
+            "Sludge Bomb",
+            "Thunder Bolt"
           ]
         }
       ]

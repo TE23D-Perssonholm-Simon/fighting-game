@@ -161,7 +161,7 @@ public class Pokemonentity
     public Dictionary<string,Statuscomponent> forced = new Dictionary<string, Statuscomponent>();
     public Dictionary<string,Statuscomponent> noswitch = new Dictionary<string, Statuscomponent>();
     public Dictionary<string,Endofturn> endofturn = new Dictionary<string, Endofturn>();
-    public Dictionary<string,Statuscomponent> timer = new Dictionary<string, Statuscomponent>();
+    public Dictionary<string,Counter> timer = new Dictionary<string, Counter>();
     public List<Move> moves = new List<Move>();
     public Pokemonentity(Pokemon basepokemon,List<string> strings)
     {

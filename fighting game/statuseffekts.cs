@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
 public class Statuseffekt
@@ -32,6 +33,9 @@ public class Statuseffekt
                 case Endofturn endofturn:
                     Prey.endofturn[id] = endofturn;
                     break;
+                case Counter counter:
+                    Prey.timer[id] = counter.Clone();
+                    break;
 
 
 
@@ -47,24 +51,31 @@ public abstract class Statuscomponent
     public void remove(Pokemonentity attacker)
     {
         string id = "";
-        if (attacker.staticeffekt.components.Contains(this))
+        
+        if (attacker.staticeffekt != null && attacker.staticeffekt.components.Contains(this))
         {
             id = attacker.staticeffekt.id;
             if (id == "Paralysis"){
                 attacker.Paralysis = 1;
             }
             attacker.staticeffekt = null;
+            if (id == "Burn"){
+                attacker.burn = 1;
+            }
+            return;
         }
         else
         {
+            Statuseffekt toremove = null;
             foreach (Statuseffekt x in attacker.statuseffekts)
             {
                 if (x.components.Contains(this))
                 {
                     id = x.id;
-                    attacker.statuseffekts.Remove(x);
+                    toremove = x;
                 }
             }
+            attacker.statuseffekts.Remove(toremove);
         }
         if (id != "")
         {
@@ -73,11 +84,6 @@ public abstract class Statuscomponent
             attacker.forced[id] = null;
             attacker.movehinderer[id] = null;
             attacker.timer[id] = null;
-        }
-
-        if (id == "Paralysis")
-        {
-            attacker.Paralysis = 1;
         }
     }
 }
@@ -115,7 +121,12 @@ public class BadlyPoisoned:Endofturn{
         
     }
 }
-public class Movehinderer : Statuscomponent
+public abstract class Movehinderer : Statuscomponent
+{
+    public abstract List<string> Run(Pokemonentity attacker);
+}
+
+public class Basic_Movehinderer : Movehinderer
 {
     int oddsofstopping;
     int oddsofremoval;
@@ -123,7 +134,7 @@ public class Movehinderer : Statuscomponent
     string failmessage;
     string intromessage;
 
-    public Movehinderer(int stop, int remove, string fail, string intro, string cure)
+    public Basic_Movehinderer(int stop, int remove, string fail, string intro, string cure)
     {
         oddsofstopping = stop;
         oddsofremoval = remove;
@@ -132,7 +143,7 @@ public class Movehinderer : Statuscomponent
         curemessage = cure;
     }
 
-    public List<string> Run(Pokemonentity attacker)
+    public override List<string> Run(Pokemonentity attacker)
     {
         List<string> displaymessage = new List<string>();
         displaymessage.Add($"{attacker.basepokemon.name} {intromessage}");
@@ -158,5 +169,44 @@ public class Movehinderer : Statuscomponent
         return displaymessage;
     }
 }
+public class Timedremoval : Movehinderer{
+    string curemessage;
+    string failmessage;
+    public Timedremoval(string curemessage,string failmessage){
+        this.curemessage = curemessage;
+        this.failmessage = failmessage;
+    }
+    
+    public override List<string> Run(Pokemonentity attacker)
+    {
+        List<string> displaystrings = new List<string>();
+        string id = "";
+        foreach(string strin in attacker.movehinderer.Keys){
+            if (attacker.movehinderer[strin] == this){
+                id = strin;
+            }
+        }
+        if(attacker.timer[id].number-- <= -1){
+            remove(attacker);
+            displaystrings.Add($"{attacker.basepokemon.name} {curemessage}");
+            displaystrings.Add("True");
+            return displaystrings;
+        }
+        displaystrings.Add($"{attacker.basepokemon.name} {failmessage}");
+        displaystrings.Add("false");
+        return displaystrings;
 
+
+    }
+}
+public class Counter:Statuscomponent{
+    public Counter(int startvalue){
+        this.number = number;
+    }
+    
+    public Counter Clone(){
+        return new Counter(number);
+    }
+    public int number{get;set;}
+}
 
