@@ -55,9 +55,17 @@ void match()
     Team player1 = options[Globaldata.Ask($"player1 choose your team",options.Keys.ToList())].Clone();
     System.Console.WriteLine("player 1 choose your name");
     player1.name = Console.ReadLine();
+    while(player1.name.Length < 10 && player1.name.Length > 0){
+        System.Console.WriteLine("Type a name between 1-10 characters");
+        player1.name = Console.ReadLine();
+    }
     Team player2 = options[Globaldata.Ask("Player 2 choose your team",options.Keys.ToList())].Clone();
     System.Console.WriteLine("player 2 choose your name");
     player2.name = Console.ReadLine();
+    while(player2.name.Length < 10 && player2.name.Length > 0){
+        System.Console.WriteLine("Type a name between 1-10 characters");
+        player2.name = Console.ReadLine();
+    }
     List<Team> teamorder = new List<Team>();
     teamorder.Add(player1);
     teamorder.Add(player2);
