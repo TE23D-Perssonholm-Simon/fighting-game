@@ -51,6 +51,7 @@ public static class Initialize
         Loadstatuseffekt("Burn", components, "got burned");
         components.Clear();
         components.Add(new BadlyPoisoned());
+        components.Add(new Counter(1,1,true));
         Loadstatuseffekt("B Poisoned",components,"was badly poisoned");
         components.Clear();
         components.Add(new Basicendofturn("poison",8));
@@ -60,7 +61,7 @@ public static class Initialize
         Loadstatuseffekt("Freeze",components,"froze");
         components.Clear();
         components.Add(new Timedremoval("","flinched"));
-        components.Add(new Counter(1));
+        components.Add(new Counter(1,-1,false));
         Loadstatuseffekt("Flinch",components,"");
 
         System.Console.WriteLine("Status effects loaded");
@@ -88,6 +89,7 @@ public static class Initialize
         effects.Clear();
         effects.Add(new Switch_effect("a"));
         Loadmove("U-Turn",0,new Physical(70,100,"bug"),effects);
+        Loadmove("Teleport",-2,new Statusmove(100),effects);
         effects.Clear();
         Loadmove("Bullet Punch",1,new Physical(40,100,"steel"),effects);
         Loadmove("X-Scissor",0,new Physical(80,100,"bug"),effects);
@@ -109,8 +111,7 @@ public static class Initialize
         Loadmove("Giga Drain",0,new Special(75,100,"grass"),effects);
         Loadmove("Drain Punch",0,new Physical(75,100,"fighting"),effects);
         effects.Clear();
-        //10
-        effects.Add(new Staticeffectgiver(100,"Freeze",true));
+        effects.Add(new Staticeffectgiver(10,"Freeze",true));
         Loadmove("Ice Beam",0,new Special(90,100,"ice"),effects);
         effects.Clear();
         effects.Add(new Player_statchanger(100,0,2,0,0,0));
@@ -121,12 +122,15 @@ public static class Initialize
         effects.Clear();
         effects.Add(new Opponent_statchanger(10,0,0,0,-1,0));
         Loadmove("Energy Ball",0,new Special(90,100,"grass"),effects);
+        Loadmove("Psychic",0,new Special(90,100,"psychic"),effects);
         effects.Clear();
-        //30
-        effects.Add(new Staticeffectgiver(100,"Flinch",false));
+        effects.Add(new Staticeffectgiver(30,"Flinch",false));
         Loadmove("Air Slash",0,new Special(75,95,"flying"),effects);
         effects.Clear();
-        
+        effects.Add(new Player_statchanger(100,0,-2,0,0,0));
+        Loadmove("Draco Meteor",0,new Special(130,90,"dragon"),effects);
+        effects.Clear();
+
 
         System.Console.WriteLine("Moves loaded");
         Console.ReadLine();
@@ -183,6 +187,26 @@ public static class Initialize
         moves.Add("Energy Ball");
         //darkpulse
         loadpokemon("Gengar",230,251,240,394,273,350,"ghost","poison",moves);
+        moves.Clear();
+        moves.Add("Shadow Ball");
+        moves.Add("U-Turn");
+        moves.Add("Flamethrower");
+        moves.Add("Thunder Bolt");
+        moves.Add("Draco Meteor");
+        loadpokemon("Dragapult",286,220,139,184,139,260,"ghost","dragon",moves);
+        moves.Clear();
+        moves.Add("Teleport");
+        moves.Add("Surf");
+        moves.Add("Slack Off");
+        moves.Add("Psychic");
+        loadpokemon("Slowbro",300,139,202,184,148,58,"water","psychic",moves);
+        moves.Clear();
+        moves.Add("Psychic");
+        moves.Add("Shadow Ball");
+        moves.Add("Energy Ball");
+        moves.Add("Nasty Plot");
+        loadpokemon("Alakazam",220,94,85,247,175,220,"psychic","empty type",moves);
+        moves.Clear();
         
 
         System.Console.WriteLine("Pokemon loaded");

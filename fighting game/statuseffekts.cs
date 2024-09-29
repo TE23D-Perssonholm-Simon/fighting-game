@@ -17,7 +17,7 @@ public class Statuseffekt
 
     public Statuseffekt Clone()
     {
-        Statuseffekt effekt = new Statuseffekt(id, components,inflictmessage);
+        Statuseffekt effekt = new Statuseffekt(id, components, inflictmessage);
         return effekt;
 
     }
@@ -44,22 +44,47 @@ public class Statuseffekt
             }
         }
     }
-    
+    public void remove(Pokemonentity attacker)
+    {
+        if (attacker.endofturn.ContainsKey(id))
+        {
+            attacker.endofturn.Remove(id);
+        }
+        if (attacker.noswitch.ContainsKey(id))
+        {
+            attacker.noswitch.Remove(id);
+        }
+        if (attacker.forced.ContainsKey(id))
+        {
+            attacker.forced.Remove(id);
+        }
+        if (attacker.movehinderer.ContainsKey(id))
+        {
+            attacker.movehinderer.Remove(id);
+        }
+        if (attacker.timer.ContainsKey(id))
+        {
+            attacker.timer.Remove(id);
+        }
+    }
+
 }
 public abstract class Statuscomponent
 {
     public void remove(Pokemonentity attacker)
     {
         string id = "";
-        
+
         if (attacker.staticeffekt != null && attacker.staticeffekt.components.Contains(this))
         {
             id = attacker.staticeffekt.id;
-            if (id == "Paralysis"){
+            if (id == "Paralysis")
+            {
                 attacker.Paralysis = 1;
             }
             attacker.staticeffekt = null;
-            if (id == "Burn"){
+            if (id == "Burn")
+            {
                 attacker.burn = 1;
             }
             return;
@@ -79,46 +104,72 @@ public abstract class Statuscomponent
         }
         if (id != "")
         {
-            attacker.endofturn[id] = null;
-            attacker.noswitch[id] = null;
-            attacker.forced[id] = null;
-            attacker.movehinderer[id] = null;
-            attacker.timer[id] = null;
+            if (attacker.endofturn.ContainsKey(id))
+            {
+                attacker.endofturn.Remove(id);
+            }
+            if (attacker.noswitch.ContainsKey(id))
+            {
+                attacker.noswitch.Remove(id);
+            }
+            if (attacker.forced.ContainsKey(id))
+            {
+                attacker.forced.Remove(id);
+            }
+            if (attacker.movehinderer.ContainsKey(id))
+            {
+                attacker.movehinderer.Remove(id);
+            }
+            if (attacker.timer.ContainsKey(id))
+            {
+                attacker.timer.Remove(id);
+            }
         }
     }
 }
-public abstract class Endofturn : Statuscomponent{
+public abstract class Endofturn : Statuscomponent
+{
     public abstract List<string> Execute(Team a);
 }
-public class Basicendofturn: Endofturn{
+public class Basicendofturn : Endofturn
+{
     string name;
     int dividedamadge;
-    public Basicendofturn(string name, int dividedamadge){
+    public Basicendofturn(string name, int dividedamadge)
+    {
         this.name = name;
         this.dividedamadge = dividedamadge;
     }
-    public override List<string> Execute(Team a){
+    public override List<string> Execute(Team a)
+    {
         List<string> displaystrings = new List<string>();
         Pokemonentity attacker = a.pokemons[0];
-        int damadge = (int)(attacker.maxhp * (1f/dividedamadge));
+        int damadge = (int)(attacker.maxhp * (1f / dividedamadge));
         attacker.hp -= damadge;
         displaystrings.Add($"{attacker.basepokemon.name} took {damadge.ToString()} damadge of {name}");
         return displaystrings;
     }
 }
-public class BadlyPoisoned:Endofturn{
-    int turn;
-    public BadlyPoisoned(){
-        turn = 0;
-    }
-    public override List<string> Execute(Team a){
+public class BadlyPoisoned : Endofturn
+{
+    public override List<string> Execute(Team a)
+    {
+        Pokemonentity attacker = a.pokemons[0];
         List<string> displaystrings = new List<string>();
-        turn++;
-        int damadge = (int)(a.pokemons[0].maxhp * (1f/16f)*turn);
-        displaystrings.Add($"{a.pokemons[0]} took {damadge.ToString()} damadge due to poison");
+        string id = "";
+        foreach (string strin in attacker.endofturn.Keys)
+        {
+            if (attacker.endofturn[strin] == this)
+            {
+                id = strin;
+            }
+        }
+        
+        int damadge = (int)(a.pokemons[0].maxhp * (1f / 16f) * attacker.timer[id].number);
+        displaystrings.Add($"{a.pokemons[0].basepokemon.name} took {damadge.ToString()} damadge due to poison");
         a.pokemons[0].hp -= damadge;
         return displaystrings;
-        
+
     }
 }
 public abstract class Movehinderer : Statuscomponent
@@ -150,9 +201,9 @@ public class Basic_Movehinderer : Movehinderer
         int randomnr = Random.Shared.Next(100);
         if (randomnr < oddsofremoval)
         {
-            
-            displaymessage.Add(curemessage);
             displaymessage.Add("hi");
+            displaymessage.Add($"{attacker.basepokemon.name} {curemessage}");
+
             remove(attacker);
             return displaymessage;
         }
@@ -169,24 +220,29 @@ public class Basic_Movehinderer : Movehinderer
         return displaymessage;
     }
 }
-public class Timedremoval : Movehinderer{
+public class Timedremoval : Movehinderer
+{
     string curemessage;
     string failmessage;
-    public Timedremoval(string curemessage,string failmessage){
+    public Timedremoval(string curemessage, string failmessage)
+    {
         this.curemessage = curemessage;
         this.failmessage = failmessage;
     }
-    
+
     public override List<string> Run(Pokemonentity attacker)
     {
         List<string> displaystrings = new List<string>();
         string id = "";
-        foreach(string strin in attacker.movehinderer.Keys){
-            if (attacker.movehinderer[strin] == this){
+        foreach (string strin in attacker.movehinderer.Keys)
+        {
+            if (attacker.movehinderer[strin] == this)
+            {
                 id = strin;
             }
         }
-        if(attacker.timer[id].number-- <= -1){
+        if (attacker.timer[id].number == 0)
+        {
             remove(attacker);
             displaystrings.Add($"{attacker.basepokemon.name} {curemessage}");
             displaystrings.Add("True");
@@ -199,14 +255,32 @@ public class Timedremoval : Movehinderer{
 
     }
 }
-public class Counter:Statuscomponent{
-    public Counter(int startvalue){
-        this.number = number;
+public class Counter : Statuscomponent
+{
+    public Counter(int startvalue,int change,bool resets_after_switch)
+    {
+        original_number = startvalue;
+        this.number = original_number;
+        this.change = change;
+        this.resets_after_switch = resets_after_switch;
     }
-    
-    public Counter Clone(){
-        return new Counter(number);
+
+    public Counter Clone()
+    {
+        return new Counter(number,change,resets_after_switch);
     }
-    public int number{get;set;}
+    public int original_number;
+    public int number { get; set; }
+    public int change;
+    bool resets_after_switch;
+    public void count(){
+        number += change;
+    }
+    public void switchreset(){
+        if (resets_after_switch){
+            number = original_number;
+        }
+    }
+
 }
 

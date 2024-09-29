@@ -63,7 +63,10 @@ void match()
     teamorder.Add(player2);
     Globaldata.player1 = player1;
     Globaldata.player2 = player2;
-
+    Switcheroo one = player1.set_start(player2);
+    Switcheroo two = player2.set_start(player1);
+    one.execute(player1,player2);
+    two.execute(player2,player1);
     bool matchon = true;
     while (matchon)
     {
@@ -94,6 +97,12 @@ void match()
         Globaldata.display(0,0,player1.Display());
         Globaldata.display(Console.WindowWidth-10,0,player2.Display());
         Console.ReadLine();
+        foreach(Counter x in teamorder[0].pokemons[0].timer.Values){
+            x.count();
+        }
+        foreach(Counter x in teamorder[1].pokemons[0].timer.Values){
+            x.count();
+        }
         foreach (Endofturn x in teamorder[0].pokemons[0].endofturn.Values){
             
             Console.Clear();

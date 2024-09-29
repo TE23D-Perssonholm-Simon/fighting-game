@@ -81,6 +81,30 @@ public class Team
                 }
             }
             System.Console.WriteLine($"cant switch to {pokemons[0]} because it is already active");
+            Console.ReadLine();
+        }
+    }
+    public Switcheroo set_start(Team opp)
+    {
+        while (true)
+        {
+            List<string> options = new List<string>();
+            string svar;
+            foreach (Pokemonentity x in pokemons)
+            {
+                options.Add(x.basepokemon.name);
+
+            }
+            svar = Globaldata.Switch_Ask("Set start pokemon", options,opp);
+            for (int i = 0; i < pokemons.Count; i++)
+            {
+                if (pokemons[i].basepokemon.name == svar)
+                {
+
+                    return new Switcheroo(i); ;
+                }
+            }
+            System.Console.WriteLine($"cant switch to {pokemons[0]} because it is already active");
         }
     }
     public List<string> Display()
@@ -264,8 +288,10 @@ public class Team
             }
             options.Add("Exit", null);
             string move2 = Globaldata.Ask("Replace it with what move", options.Keys.ToList());
+            if (move2 != "Exit"){
             thepokemon.moves.Remove(replacemove);
             thepokemon.moves.Add(options[move2]);
+            }
 
         }
     }

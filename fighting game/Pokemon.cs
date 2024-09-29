@@ -192,4 +192,19 @@ public class Pokemonentity
         pokemon.moves = moveids;
         return pokemon;
     }
+    public void switchreset(){
+        _attackbuff = 0;
+        _spattackbuff = 0;
+        _defbuff = 0;
+        _spdefbuff = 0;
+        _speedbuff = 0;
+        System.Console.WriteLine(attackbuff);
+        Console.ReadLine();
+        foreach(Statuseffekt x in statuseffekts){
+            x.remove(this);
+        }
+        foreach(Counter x in timer.Values){
+            x.switchreset();
+        }
+    }
 }

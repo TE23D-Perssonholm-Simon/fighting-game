@@ -158,6 +158,65 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Simon handcrafted",
+      "team": [
+        {
+          "basepokemonid": "Slowbro",
+          "moves": [
+            "Teleport",
+            "Surf",
+            "Slack Off",
+            "Psychic"
+          ]
+        },
+        {
+          "basepokemonid": "Dragapult",
+          "moves": [
+            "U-Turn",
+            "Draco Meteor",
+            "Shadow Ball",
+            "Flamethrower"
+          ]
+        },
+        {
+          "basepokemonid": "Venasour",
+          "moves": [
+            "Giga Drain",
+            "Sludge Bomb",
+            "Toxic",
+            "Giga Drain"
+          ]
+        },
+        {
+          "basepokemonid": "Charizard",
+          "moves": [
+            "Flamethrower",
+            "Air Slash",
+            "Roost",
+            "Will-O-Wisp"
+          ]
+        },
+        {
+          "basepokemonid": "Scizor",
+          "moves": [
+            "Sword Dance",
+            "X-Scissor",
+            "U-Turn",
+            "Bullet Punch"
+          ]
+        },
+        {
+          "basepokemonid": "Alakazam",
+          "moves": [
+            "Psychic",
+            "Shadow Ball",
+            "Energy Ball",
+            "Nasty Plot"
+          ]
+        }
+      ]
     }
   ]
 }

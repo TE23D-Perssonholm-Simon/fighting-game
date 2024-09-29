@@ -262,4 +262,50 @@ public static class Globaldata
             }
         }
     }
+    public static string Switch_Ask(string title, List<string> keys,Team opponent)
+    {
+        int consoleWidth = Console.WindowWidth;
+        int cursor = 0;
+        while (true)
+        {
+            Console.Clear();
+            Console.SetCursorPosition((consoleWidth - title.Length)/2,0);
+            System.Console.WriteLine(title);
+            string oppdisplay = opponent.previewdisplay();
+            Console.SetCursorPosition((consoleWidth - oppdisplay.Length)/2,1);
+            System.Console.WriteLine(oppdisplay);
+            for (int i = 0; i < keys.Count; i++)
+            {
+                Console.SetCursorPosition((consoleWidth - keys[i].Length)/2,Console.CursorTop);
+                if (i == cursor)
+                {
+                    Console.Write("\x1b[47m\x1b[30m");
+                    Console.Write(keys[i]);
+                    Console.WriteLine("\x1b[0m");
+
+                }
+                else
+                {
+                    Console.WriteLine(keys[i]);
+                }
+            }
+            string input = Console.ReadKey().Key.ToString().ToLower();
+            if (input == "w")
+            {
+                if (cursor != 0)
+                {
+                    cursor--;
+                }
+            }
+            if (input == "s" && cursor + 1 < keys.Count)
+            {
+                cursor++;
+            }
+            if (input == "enter")
+            {
+                Console.Clear();
+                return (keys[cursor]);
+            }
+        }
+    }
 }

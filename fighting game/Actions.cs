@@ -86,6 +86,7 @@ public class Switcheroo : Action
     {
         List<string> displaystrings = new List<string>();
         Pokemonentity leadpokemon = attack.pokemons[0];
+        leadpokemon.switchreset();
         attack.pokemons[0] = attack.pokemons[switchto];
         attack.pokemons[switchto] = leadpokemon;
         displaystrings.Add($"{leadpokemon.basepokemon.name} switched out");
