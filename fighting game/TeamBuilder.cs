@@ -24,6 +24,7 @@ public static class TeamBuilder
             string answer = Globaldata.Ask("Team Editor", keys.Keys.ToList());
             if (answer == "Exit")
             {
+                FileManager.Write();
                 return;
             }
             else if (answer == "Create New"){

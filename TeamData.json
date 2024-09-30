@@ -217,6 +217,69 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Sigma rizz ohio derivata Tu matte formel 3.14159",
+      "team": [
+        {
+          "basepokemonid": "Charizard",
+          "moves": [
+            "Body Slam",
+            "Will-O-Wisp",
+            "Flamethrower",
+            "Air Slash"
+          ]
+        },
+        {
+          "basepokemonid": "Nidoking",
+          "moves": [
+            "Sludge Bomb",
+            "Earthquake",
+            "Sludge Bomb",
+            "Earthquake"
+          ]
+        },
+        {
+          "basepokemonid": "Alakazam",
+          "moves": [
+            "Shadow Ball",
+            "Psychic",
+            "Energy Ball",
+            "Nasty Plot"
+          ]
+        },
+        {
+          "basepokemonid": "Blastoise",
+          "moves": [
+            "Surf",
+            "Ice Beam",
+            "Surf",
+            "Ice Beam"
+          ]
+        },
+        {
+          "basepokemonid": "Pikachu",
+          "moves": [
+            "Thunder Bolt",
+            "Thunder Wave",
+            "Body Slam",
+            "Thunder Bolt"
+          ]
+        },
+        {
+          "basepokemonid": "Dragapult",
+          "moves": [
+            "Shadow Ball",
+            "U-Turn",
+            "Draco Meteor",
+            "Flamethrower"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "",
+      "team": []
     }
   ]
 }
